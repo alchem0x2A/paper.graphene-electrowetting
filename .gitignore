@@ -178,3 +178,28 @@ TSWLatexianTemp*
 
 # KBibTeX
 *~[0-9]*
+
+#OSX
+*.DS_Store
+*~
+*#
+.#*
+*\]
+
+# thumbnail images
+img/*_thumb.png
+img/*_tmp
+img/*.tex
+
+# outline
+outline
+outline/*
+
+# python cache
+writing/__pycache__/
+writing/_minted*
+writing/ltximg
+writing/*.pdf
+
+
+
