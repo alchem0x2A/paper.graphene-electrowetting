@@ -175,6 +175,7 @@ guidance for operational liquid-phase 2D material-based devices.
 
 * Description of model                                               :ignore:
 
+** Basic model                                                      :ignore:
 Due to the complex dynamic nature of wetting
 cite:Cassie_1944,Wenzel_1936,Gao_2007,Marmur_2009, we only study the
 static wettability of 2D materials. We only consider water as the
@@ -195,8 +196,11 @@ where $\Phi_{\mathrm{2D-w}}$ is defined as:
 where $\gamma_{\mathrm{2D-w}}$ is the surface tension between the
 interface of the 2D material and the aqueous phase,
 $\gamma_{\mathrm{2D}}$ and $\gamma_{\mathrm{w}}$ are the surface
-tensions of the 2D material and water in vacuum,
-respectively. $\Phi_{\mathrm{2D-w}}$ is contributed by both the
+tensions of the 2D material and water in air,
+respectively.
+
+** The adhesion energy                                              :ignore:
+ $\Phi_{\mathrm{2D-w}}$ is contributed by both the
 short-range dispersion interaction and long-range electrostatic
 interaction between the 2D material and water. The existence of
 additional charges in 2D materials gives rise to the reorientation of
@@ -612,13 +616,249 @@ setups.
 * Continuum Model                                                    :ignore:
 
 ** Basic model                                                      :ignore:
-
+*** The effect of surface tension change due to surface charge     :ignore:
 While the interfacial dispersion interaction vanishes several
 molecules away from the surface, the long range electrostatic
 interaction will cause the aqueous ions to rearrange at a much longer
 length scale, forming an EDL at the interface and decrease the
-interfacial surface tension by the phenomenon known as
-electrowetting. To model the effect of electrowetting, we first
+interfacial surface tension by the phenomenon known as electrowetting.
+Revisiting Eq. ([[ref:eqn:def-adhesion]]), we know that the change of
+interfacial tension due to electrostatic interactions, $\Delta
+\Phi_{\mathrm{2D-w}}^{\mathrm{el}}$, is given by:
+
+#+NAME: eqn:Delta-Phi-el-def
+\begin{equation}
+\Delta \Phi_{\mathrm{2D-w}}^{\mathrm{el}} = \Delta \gamma_{\mathrm{2D-w}}^{\mathrm{el}}
+                                           -\Delta \gamma_{\mathrm{2D}}^{\mathrm{el}}
+                                           -\Delta \gamma_{\mathrm{w}}^{\mathrm{el}}
+\end{equation}
+where $\Delta \gamma_{\mathrm{2D-w}}^{\mathrm{el}}$, $\Delta
+\gamma_{\mathrm{2D}}^{\mathrm{el}}$ and $\Delta
+\gamma_{\mathrm{w}}^{\mathrm{el}}$ denote the change of surface
+tension of 2D material-water interface, 2D material-air and
+water-air, respectively. In the continuum model, all the changes of
+surface tensions can be modeled by surface excesses. From the
+isothermal 2D Gibbs-Duhem equation we can calculate the change of surface
+energy $\mathrm{d} \gamma$:
+
+#+NAME: eqn:iso-gibbs-duhem
+\begin{equation}
+\displaystyle
+\mathrm{d}\gamma = -\frac{\sum_{\mathrm{i}} n_{\mathrm{i}}^{\mathrm{ex}}}{A} \mathrm{d} \mu_{\mathrm{i}} 
+                 = -\sum_{\mathrm{i}} \Gamma_{i} \mathrm{d} \mu_{\mathrm{i}}
+\end{equation}
+where $n_{\mathrm{i}}^{\mathrm{ex}}$ is the surface excess amount of
+specie i, $A$ is the unit are of the surface, $\Gamma_{\mathrm{i}}$ is
+the surface excess concentration of specie i, and $\mu_{\mathrm{i}}$
+is the chemical potential of specie i. Eq. ([[ref:eqn:iso-gibbs-duhem]])
+indicates that: both the charges accumulated on the 2D material
+surface and the formation of electric double layer will alter the
+interfacial tension of 2D materials. As far as we are concerned, the
+effect of charge-induced surface tension change of 2D materials has
+rarely been addressed previously. For a charged 2D material surface in
+air, the decrease of surface tension equals the work required to
+charge the isolated 2D material:
+
+#+NAME: eqn:dgamma-QC
+\begin{equation}
+\begin{aligned}
+\mathrm{d} \gamma_{\mathrm{2D}}^{\mathrm{el}} &= -\Gamma_{e} \mathrm{d} E_{\mathrm{F}} \\
+                                              &= -\frac{\sigma_{\mathrm{2D}}}{C_{\mathrm{2D}}} \mathrm{d}\sigma_{\mathrm{2D}}
+\end{aligned}
+\end{equation}
+where $E_{\mathrm{F}}=\mu_{e}$ is the Fermi level of the 2D material
+(equals the chemical potential of electrons in the 2D materials) and
+$C_{\mathrm{2D}}$ is the quantum capacitance of the 2D material, which
+is proportional to the density of states (DOS) $g(E_{\mathrm{F}})$ at
+Fermi level $E_{\mathrm{F}}$:
+$C_{\mathrm{2D}}=g(E_{\mathrm{F}})e^{2}$. Due to the fact that most 2D
+materials possess quantum capacitances essentially smaller than those
+of bulk materials, one would expect that the charge-induced-decrease
+of surface tension of 2D materials is more prominent than bulk
+materials. Here we demonstrate the degree of charge-induced
+surface tension decrease of several typical 2D materials in
+air. The selected 2D materials are graphene, silicene (2D allotrope
+of Si), germanene (2D allotrope of Ge), MoS_2, MoTe_2, WS_2 and
+WTe_2, respectively. Their DOS as functions of $E_{\mathrm{F}}$ have been previously
+reported by density functional theory (DFT) calculation, based on the
+HSE06 hybrid functional approach cite:tian_multiscale_2016. The
+charge-induced decrease of surface tension of the 2D materials
+$\Delta \gamma_{\mathrm{2D}}^{\mathrm{el}}$, as a function of the
+surface charge density $\sigma_{\mathrm{2D}}$, is shown in Fig. [[ref:fig:dgamma-sigma]].
+#+NAME: py-cal-dgamma-2D
+#+BEGIN_SRC python :exports results 
+  import matplotlib, numpy, scipy
+  matplotlib.use("Agg")
+  import matplotlib.pyplot as plt
+  import scipy.constants as const
+  import pycse.orgmode as org
+  from scipy.integrate import cumtrapz, trapz
+  from dcos_sigma import cal_2D
+  from pubfigure.FigureCollection import FigureCollection
+
+  Materials = {}
+  # The parameters are using values of 10^13 e/cm^2 for sigma
+  # and uF/cm^2 for C
+
+  Materials['MoS2'] = dict(n=[48.32, 0, 3.6270e-13],
+                           p=[186.6, 0, 9.6567e-13],
+                           name=r"MoS$_{2}$",)
+  Materials['MoSe2'] = dict(n=[55.94, 0, 4.2354e-13],
+                            p=[74.76, 0, 4.7792e-14],
+                            name=r"MoSe$_{2}$",)
+  Materials['MoTe2'] = dict(n=[61.67, 0, 4.7299e-13],
+                            p=[82.52, 0, 1.0820e-13],
+                            name=r"MoTe$_{2}$",)
+  Materials['WS2'] = dict(n=[33.92, 0, 3.6270e-13],
+                          p=[169.5, 0, 9.1869e-13],
+                          name=r"WS$_{2}$",)
+  Materials['WSe2'] = dict(n=[36.99, 0, 3.955e-13],
+                           p=[52.01, 0, 3.0965e-13],
+                           name=r"WSe$_{2}$",)
+  Materials['WTe2'] = dict(n=[37.87, 0, 3.8405e-13],
+                           p=[52.01, 0, 4.0845e-13],
+                           name=r"WTe$_{2}$",)
+  Materials['P'] = dict(n=[54.47, 0, 8.9640e-14],
+			p=[67.86, 0, 6.7077e-15],
+			name="Phosphorene",)
+  Materials['Gr'] = dict(n=[0, 2.745969059762e-06, 0],
+			 p=[0, 2.747402905456e-06, 0],
+			 name="Graphene",)
+  Materials['Si'] = dict(n=[0, 4.872842161338e-06, 0],
+			 p=[0, 4.663485703981e-06, 0],
+			 name="Silicene")
+  Materials['Ge'] = dict(n=[0, 5.447917304238e-06, 0],
+			 p=[0, 4.868667384166e-06, 0],
+			 name="Germanene")
+
+  # Only single unit!
+  def f_C_2D(sigma_, mater):
+      # Receive the sigma in SI
+      param_n = Materials[mater]["n"]
+      param_p = Materials[mater]["p"]
+      n_13 = sigma_/const.e/10**4
+      # Return the C_2D in SI
+      if n_13>0:
+          return (param_p[0]
+                  + param_p[1]*scipy.absolute(n_13)**0.5
+                  + param_p[2]*scipy.absolute(n_13))/100
+      else:
+          return (param_n[0]
+                  + param_n[1]*scipy.absolute(n_13)**0.5
+                  + param_n[2]*scipy.absolute(n_13))/100
+
+  def f_dgamma(sigma_lim, mater):
+      # sigma_lim is using the absolute value
+      param_n = Materials[mater]["n"]
+      param_p = Materials[mater]["p"]
+      sigma_p = numpy.linspace(sigma_lim*10**-6, sigma_lim, 200)
+      sigma_n = numpy.linspace(-sigma_lim*10**-6, -sigma_lim, 200)
+      C_2D_p = numpy.array([f_C_2D(sigma_, mater) for sigma_ in sigma_p])
+      C_2D_n = numpy.array([f_C_2D(sigma_, mater) for sigma_ in sigma_n])
+      dgamma_p = cumtrapz(-sigma_p/C_2D_p, sigma_p, initial=0)
+      dgamma_n = cumtrapz(-sigma_n/C_2D_n, sigma_n, initial=0)
+      sigmas = numpy.hstack([sigma_n[::-1], sigma_p])
+      dgammas = numpy.hstack([dgamma_n[::-1], dgamma_p])
+      return sigmas, dgammas
+
+  def plot_dgamma_sigma(fig):
+      ax = fig.add_subplot(111)
+      n_lim = 5
+      sigma_lim = n_lim*10**13*10**4*const.e
+
+      for m in ["Gr", "Si", "Ge", "MoS2", "MoTe2", "WS2", "WTe2"]:
+          sigmas, dgammas = f_dgamma(sigma_lim, m)
+          ax.plot(sigmas/const.e/10**17, dgammas*1000, label=Materials[m]["name"])
+      ax.set_xlabel(r"$\sigma_{\mathrm{2D}}$ ($10^{13}\ e\cdot$cm$^{-2}$)")
+      ax.set_ylabel(r"$\Delta\gamma_{\mathrm{2D}}^{el}$ (mJ$\cdot$m$^{-2}$)")
+      ax.legend(loc=0, prop=dict(size="smaller"))
+      # ax.set_xlim(-2, 2)
+      # ax.set_ylim(0, 0.15)
+      fig.tight_layout(pad=0)
+
+
+
+  if __name__ == "__main__":
+      fc = FigureCollection(pagesize=(2.8, 2.3),
+                            figure_style="science",
+                            col=1, row=1)
+      fig2, _ = fc.add_figure(label=False, outline=True)
+      fig2.set_plot_func(plot_dgamma_sigma)
+      org.figure(fc.save_all("../img/dgamma-sigma.pdf", outline=False),
+		 attributes=[("latex", ":width 0.95\linewidth")],
+		 label="fig:dgamma-sigma",
+		 caption=(r"$\Delta \gamma_{\mathrm{2D}}^{\mathrm{el}}$ "
+                          "as a function of "
+                          r"$\sigma_{\mathrm{2D}}$ "
+                          "for several 2D materials: graphene, silicene, germanene, "
+                          r"MoS$_{2}$, MoTe$_{2}$, WS$_{2}$ and WTe$_{2}$"))
+
+#+END_SRC
+
+#+RESULTS: py-cal-dgamma-2D
+:RESULTS:
+#+CAPTION: $\Delta \gamma_{\mathrm{2D}}^{\mathrm{el}}$ as a function of $\sigma_{\mathrm{2D}}$ for several 2D materials: graphene, silicene, germanene, MoS$_{2}$, MoTe$_{2}$, WS$_{2}$ and WTe$_{2}$
+#+LABEL: fig:dgamma-sigma
+#+ATTR_latex: :width 0.95\linewidth
+[[file:../img/dgamma-sigma.pdf]]
+:END:
+It can be observed from our calculations that graphene has the largest
+degree of surface tension decrease (ca. 22 mJ$\cdot\mathrm{m}^{-2}$
+when $\sigma_{\mathrm{2D}}=\pm5\times10^{13}\ e\cdot
+\mathrm{cm}^{-2}$), due to the fact that graphene has the lowest
+$C_{\mathrm{2D}}$ among the selected 2D materials
+cite:tian_multiscale_2016. We can rationalize the $\Delta
+\gamma_{\mathrm{2D}}^{\mathrm{el}}$ - $\sigma_{\mathrm{2D}}$ relation
+of the 2D materials by their $C_{\mathrm{2D}}$ values: the 2D
+semimetals (graphene, silicene and germanene) generally have larger
+decrease of surface tension, compared with the semiconducting 2D TMDCs
+at same doping level, due to the limited DOS dispersion in 2D
+semimetals. Notably, the results indicate that a significant decrease
+of surface tension of 2D materials (at the order of 10 mJ$\cdot
+\mathrm{m}^{-2}$) can be achieved with a doping at the order of
+$10^{13}\ e\cdot \mathrm{cm}^{-2}$, and may eventually be experimentally
+observed.
+
+Similarly, $\Delta \gamma_{\mathrm{2D-w}}^{\mathrm{el}}$ is
+contributed by both the 2D surface charge and the charge accumulation
+in the EDL:
+
+#+NAME: eqn:dgamma-2D-w
+\begin{equation}
+\mathrm{d}\gamma_{\mathrm{2D-w}}^{\mathrm{el}} = -\frac{\sigma_{\mathrm{2D}}}{e} \mathrm{d}E_{\mathrm{F}}
+-\sum_{\mathrm{i}} z_{\mathrm{i}}e\Gamma_{\mathrm{i}}^{\mathrm{s}} \mathrm{d}\psi_{\mathrm{2D}}
+\end{equation}
+where $\Gamma_{\mathrm{i}}^{\mathrm{s}}$ and $z_{\mathrm{i}}$ are the
+surface excess concentration and valency of ionic solute i,
+respectively; $\psi_{\mathrm{2D}}$ is the electrostatic potential at the 2D
+material-water interface. On the other hand $\gamma_{\mathrm{w}}$ is
+independent of the surface charge of the 2D material, since no surface
+excess is present at the water-air interface. We therefore derive
+the expression for $\Delta \Phi_{\mathrm{2D-w}}^{\mathrm{el}}$ as
+follows:
+
+#+NAME: eqn:Delta-Phi-final
+\begin{equation}
+\begin{aligned}
+\Delta \Phi_{\mathrm{2D-w}}^{\mathrm{el}} &= -\frac{\sigma_{\mathrm{2D}}}{e}dE_{\mathrm{F}} 
+                                             -\sum_{\mathrm{i}} z_{\mathrm{i}}e\Gamma_{\mathrm{i}}^{\mathrm{s}} \mathrm{d}\psi_{\mathrm{2D}}
+                                             +\frac{\sigma_{\mathrm{2D}}}{e}dE_{\mathrm{F}} \\
+                                          &= -\sigma_{\mathrm{L}} \mathrm{d}\psi_{\mathrm{2D}}
+\end{aligned}
+\end{equation}
+where $\sigma_{\mathrm{L}}$ is the total charge density in the EDL. As
+the accumulation of charge on the 2D material surface occurs both on
+the 2D material-air and 2D material-water interfaces, their
+contributions to the surface tension is canceled out. As a result
+$\Delta \Phi_{\mathrm{2D-w}}^{\mathrm{el}}$ is governed by the ion
+accumulation in EDL alone, in consistent with the trivial
+electrowetting theory (constant solid surface tension). However, the
+absolute values of $\gamma_{\mathrm{2D-w}}$ and $\gamma_{\mathrm{2D}}$
+do change due to the aforementioned phenomenon.
+
+*** The effect of EDL                                              :ignore:
+
+To evaluate the effect of electrowetting, we first
 consider that a contamination layer with thickness $d_{\mathrm{c}}$
 covers the 2D material surface. Since the airborne contaminants are
 mostly hydrocarbon compounds, they can be treated as a dielectric
@@ -646,7 +886,7 @@ $\sigma_{\mathrm{L}}$ cite:bard_electrochemical_1980:
 \begin{equation}
 \sigma_{\mathrm{2D}} + \sigma_{\mathrm{L}} = 0
 \end{equation}
-From the Gouy-Chapman model of symmetric electrolytes we know:
+From the Gouy-Chapman model of 1 symmetric electrolyte we know:
   \begin{align}
   \displaystyle
   \label{eqn:psi-L}
@@ -667,19 +907,9 @@ $\psi_{\mathrm{2D}}$ which contributes to the $\Delta \Phi_{\mathrm{2D-w}}^{el}$
 we conclude that the existence of a contamination layer does not affect
 the magnitude of $\Delta \Phi_{\mathrm{2D-w}}}^{el}$.
 
-
 ** Gibbs adsorption                                                 :ignore:
-
-The change of interfacial adhesion energy is calculated using the
-Gibbs adsorption isotherm equation:
-$\mathrm{d}\Phi_{\mathrm{2D-w}}^{el} = \mathrm{d}
-\gamma_{\mathrm{2D-w}}^{el} = -z_{0}e\Gamma
-\mathrm{d}\psi_{\mathrm{2D}}$, where $\Gamma$ is the interfacial
-adsorption number at the solid-liquid interface. Since the Debye
-length is much smaller than the diameter of a macroscopic droplet,
-$\Gamma$ can be approximated by the total excessive charge density
-$\sigma_{\mathrm{L}}$ at the interface. Therefore $\Delta
-\Phi_{\mathrm{2D-2}}^{el}$ can be derived from Eqs ([[ref:eqn:psi-2D]])
+The exact solution of $\Delta
+\Phi_{\mathrm{2D-w}}^{el}$ can be derived from Eqs ([[ref:eqn:psi-2D]])
 and (ref:eqn:psi-L):
 #+NAME: eqn:Delta-Phi-exact
 \begin{equation}
@@ -741,7 +971,7 @@ and the classical Young-Lippman equation $\Delta
 \gamma=-\frac{\sigma^{2}}{2C}$) is casually used instead, assuming the
 capacitance to be constant. Since most of the reported samples deals with pure water with extremely low $c_{0}$, the Debye-Hückel capacitance is much smaller than the Gouy-Chapman capacitance, leading to an overestimation of $\Delta\cos\theta$. Therefore our
 derivation in Eq. [[ref:eqn:Delta-Phi-exact]] provides a more accurate
-approach to analyze $\Delta \Phi_{\mathem{2D-w}}^{el}$ as a function of $\sigma_{\mathrm{2D}}$.
+approach to analyze $\Delta \Phi_{\mathrm{2D-w}}^{\mathrm{el}}$ as a function of $\sigma_{\mathrm{2D}}$.
 
 ** pH-dependent                                                     :ignore:
 
@@ -1013,7 +1243,7 @@ V_{\mathrm{2D}} = \frac{\sigma_{\mathrm{2D}} - \sigma_{\mathrm{i}}} {C_{\mathrm{
                  + \int_{\sigma_{\mathrm{i}}}^{\sigma_{\mathrm{2D}}} 
                    \frac{1}{C_{\mathrm{2D}}} \mathrm{d}\sigma'
 \end{equation}
-where $C_{\mathrm{2D}}$ is the quantum capacitance of the 2D material, which is proportional to the density of states (DOS) $g(E)$ at energy level $E$: $C_{\mathrm{2D}}=g(E)e^{2}$.
+
 
 ** Fitting data                                                     :ignore:
 *** Data for fitting                                      :ignore:noexport:
@@ -1293,12 +1523,11 @@ larger. Increasing the value of $C_{\mathrm{2D}}$ can be implemented
 by replacing graphene--a 2D semimetal, with a 2D semiconductor, such
 as TMDC cite:tian_multiscale_2016. Here we evaluate a
 2D-material-based electrowetting device consists of a 2 nm thick HfO_2
-dielectric layer with $\epsilon_{\mathrm{d}}=24.0$, and an 2D material sheet
-selected from graphene, silicene (2D allotrope of Si), germanene (2D
-allotrope of Ge), MoS_2, MoTe_2, WS_2 and WTe_2 (see
-Fig. [[ref:fig:dcos-all-2D]](a)). The DOS and $C_{\mathrm{2D}}$ are
-calculated from first-principle simulations using HSE06 hydrid
-functional (see Ref. cite:tian_multiscale_2016). The magnitude of $\Delta \cos \theta$ as a function of $V_{\mathrm{2D}}$ in devices based on different 2D materials is shown in Fig. [[ref:fig:dcos-all-2D]](b).
+dielectric layer with $\epsilon_{\mathrm{d}}=24.0$, and an 2D material
+sheet selected from graphene, silicene, germanene, MoS_2, MoTe_2, WS_2
+and WTe_2 (see Fig. [[ref:fig:dcos-all-2D]](a)). The magnitude of $\Delta
+\cos \theta$ as a function of $V_{\mathrm{2D}}$ in devices based on
+different 2D materials is shown in Fig. [[ref:fig:dcos-all-2D]](b).
 #+NAME: dcos-all-2D
 #+BEGIN_SRC python :exports results 
   import matplotlib, numpy, scipy
