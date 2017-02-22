@@ -29,28 +29,29 @@
 #+BEGIN_EXPORT latex
 \newpage{}
 \begin{abstract}
-  The emergence of 2D-material-based liquid-phase devices calls for
-  the need for understanding the wetting property at the
-  2D-material-liquid interface, and particularly the doping-induced
-  tuning of wetting properties. In this letter, we propose a
-  multiscale view of the doping-induced tunable wettability of 2D
-  materials, by combining the reorientation effect of water molecules
-  estimated by MD simulation, and the electrowetting effect calculated
-  by continuum model. We reveal the electrostatic nature of the
-  doping-induced wettability under both scale. We further evaluate the
-  recent finding of doping-induced wettability tuning of graphene with
-  the proposed model, by considering incomplete surface coverage of 2D
-  materials. We find that minor surface incompleteness can cause great
-  discrepancy in the measured value of interfacial wettability, requiring
-  extreme care for interpreting the experimental results. In
-  addition, we prove that a 2D material with higher density of states
-  can essentially reduce the gating voltage in a 2D-material-based
-  electrowetting device, and rank the tunability of the 2D materials
-  as: MoTe$_{2}$ > MoS$_{2}$ > WTe$_{2}$ > WS$_{2}$ > germanene > silicene >
-  graphene. Our multiscale analysis provides a comprehensive view of
-  the wettability of 2D material interface, and we believe operational
-  2D-material-based liquid manipulating devices will be facilitate by
-  the principles presented in this letter.
+  Understanding molecular interactions between liquid and the doped two-dimensional (2D) 
+  materials enables new technology opportunities in functional surfaces and ultrathin membranes. 
+  Here, we develop the first theoretical framework to model the wettability of the doped two-dimensional 
+  (2D) materials as a function of their doping level. Multiscale physical phenomena are considered, 
+  including: (i) the change of 2D materials surface energy, 
+  (ii) the molecular reorientation of liquid molecules adjacent to the interface, 
+  and (iii) the electrical double layer (EDL) formed in the liquid phase. 
+  \textcolor{cyan}{We propose that the EDL effect dominates the contact angle change }
+  and show that upon doping, the decrease of the equilibrium water contact angle on a sheet of defect-free, 
+  monolayer 2D material is typically less than 7 degrees. 
+  We then study the role of the surface defects and the influence of 2D material choice.
+  \textcolor{cyan}{Our analysis show that the defect density plays a crucial role in the water contact angle on the doped
+  2D materials, and is responsible for the discrepancy between the recent experimental observations and our proposed 
+  theory. Based on the quantum capacitances (QCs) of various 2D materials calculated by density functional theory (DFT),
+  we predict that when the the 2D material is doped by electrostatic gating, 
+  the contact angle change on 2D semiconductors (e.g. transition metal dichalcogenides (TMDCs)) is more
+  sensitive to the gate voltage compared to that on 2D semimetals (e.g. graphene). 
+  Selecting a 2D material with a higher QC essentially reduces the gate voltage required to reach the same doping level,
+  and ensures a wider operational region in 2D-material-based liquid phase devices.}
+  \textcolor{magenta}{
+  FINAL CONCLUSIONS PLACE HOLDER.
+  }
+  
 \end{abstract}
 \maketitle
 #+END_EXPORT
