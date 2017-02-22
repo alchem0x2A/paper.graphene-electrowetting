@@ -87,89 +87,79 @@
 
 #+END_SRC
 
-* Introduction                                                       :ignore:
+* Introduction
 
 ** The importance of understating the 2D-liquid interaction         :ignore:
 
-The emergence of two-dimensional (2D) materials has attracted broad
-interest in various research fields, inspired by their unique physical
-and chemical properties. Recent progress of scalable 2D material
-synthesis paves the way for their liquid phase 2D-material-based
-applications, for instance functional coating
-cite:Prasai_2012,Rafiee_2010,Kim_2014, nanotribology devices
-cite:Yin_2014,Tang_2016,Feng_2016, nanoporous desalination apparatus
-cite:Surwade_2015,Rollings_2016,Jain_2015, droplet manipulation
-cite:Hern_ndez_2013,Vijayarangamuthu_2015, etc.  To fully exploit the
-physics of the interface between 2D materials and liquid phase, a
-comprehensive understanding of the 2D-material-liquid interaction, and in
-particular, the wettability, is of great importance.
-
+Two-dimensional (2D) materials, the crystalline films with a thickness
+of one atom or one molecule, combine optical transparency and the
+quantum-confined properties.
+*************** TODO [cite some review papers]. 
+*************** END
+Recent progress in the scalable production of large-area 2D materials
+*************** TODO cite review papers
+*************** END
+has paved the way for the applications of functional surfaces and
+ultrathin membranes.
+*************** TODO cite review papers
+*************** END
 
 ** Current state of 2D-liquid research                              :ignore:
 
-Wetting on atomically-thin 2D materials has long been a hot but highly
-disputed topic
-cite:taherian2013what,Kozbial_2015,Parobek_2015,Govind_Rajan_2016.
-Accurate description of the intrinsic wettability of 2D materials is
-known to be challenging. Recent studies show that the wettability on
-graphene cite:li_effect_2013,Xu_2013_withwhat,kozbial_study_2014 and
-MoS_2 cite:Kozbial_2015,Chow_2015 is strongly affected by airborne
-contaminants. Meanwhile, the contact angle measurement technique which
-has been widely to determine the wettability on 2D materials, may also
-suffer inaccuracy from contact angle hysteresis caused by local
-defects cite:raj_wettability_2013.  On the other hand, unlike bulk
-materials, the thickness of a 2D material falls within the effective
-range of dispersion interactions.  As a result, the dispersion
-interaction between the substrate underneath the 2D material and
-liquid molecules is not fully screened by the 2D material, giving rise
-to the fascinating property known as the "wetting-translucency"
-cite:rafiee_wetting_2012,shih_breakdown_2012,shih_wetting_2013.
-Moreover, 2D semimetals (graphene, silecene, germanene, etc.) and 2D
-semiconductors (e.g, transition metal dichalcogenides (TMDCs)) possess
-significantly lower density of states (DOS) than bulk materials,
-making them easier to be doped by the underlying substrates
-cite:Chen_2013,Varchon_2007,Giovannetti_2008 or electrostatic gating
-cite:Das_2008,Perera_2013. Due to the ubiquity of doping in 2D
-materials, it is worth investigating the relationship between the
-doping level and wettability. Several recent reports have addressed
-the issue of doping-induced tunability of graphene's wettability, from
-both atomistic simulations
-cite:ostrowski_tunable_2014,ren_interfacial_2015,Taherian_2015,daub_electrowetting_2007
-and experimental demonstrations
-cite:hong_mechanism_2016,goniszewski_correlation_2016,ashraf_doping-induced_2016.
-However, discrepancies exist between individual reports, concerning
-the origin and magnitude of the doping-induced wetting
-tunability. Moreover, to get a full perspective of such phenomenon,
-the gap between the nanoscale simulations and macroscopic experimental
-results needs to be filled, and the aforementioned issues of intrinsic
-wettability and wetting translucency should also be taken into account.
+The realization of these technologies essentially requires precise
+control over the interactions between liquid and the ultrathin
+materials, which motivates fundamental research of their
+wettability. An accurate determination of the interfacial tension,
+nevertheless, remains highly disputed
+cite:taherian2013what,Kozbial_2015,Parobek_2015,Govind_Rajan_2016. Early
+literature on understanding the surface science of 2D materials has
+highlighted the effects of the airborne contaminants
+cite:li_effect_2013,Xu_2013_withwhat,kozbial_study_2014,Kozbial_2015,Chow_2015
+and the underlying substrate
+cite:raj_wettability_2013,rafiee_wetting_2012,shih_breakdown_2012,shih_wetting_2013,
+since the length scale for the van der Waals (vdW) interactions is
+comparable to the thickness of a monolayer. On the other hand, a
+subtle but important fact is that the 2D semimetals (e.g, graphene and
+silicene) and 2D semiconductors (e.g., transition metal
+dichalcogenides (TMDCs)) possess low density of states (DOSs) around
+the intrinsic Fermi level ($E_{\mathrm{F}}$), such that the effect of
+doping, either induced by the surroundings
+cite:Chen_2013,Varchon_2007,Giovannetti_2008, or by the electrostatic
+gating cite:Das_2008,Perera_2013, also comes into play. Very recently,
+the doping-induced change in the wettability of graphene has been
+observed in the contact-angle experiments
+cite:hong_mechanism_2016,goniszewski_correlation_2016,ashraf_doping-induced_2016,
+and the molecular dynamics (MD) simulations
+cite:ostrowski_tunable_2014,ren_interfacial_2015,Taherian_2015,daub_electrowetting_2007. However,
+most reports described the doping-dependent wettability with the basic
+Young-Lippmann equation (YLE) cite:Lippmann_1875, whereas the
+interplay between the polar orientation of water molecules at the
+interface cite:Shen_2006 and the electronic structure of the 2D
+materials is often ignored. In order to address the discrepancies
+among the literature, a more complete theoretical picture that bridges
+the gap between different length scales is clearly required.
+
 
 ** Our proposal                                                     :ignore:
 
-In this letter, we propose a multiscale approach to properly model the
-doping-induced tuning of 2D materials' wettability. We model the
-change of surface adhesion energy between water and 2D material as a
-combined effect of (i) reorientation of water molecules, characterized
-by molecular dynamic (MD) simulations and (ii) electrowetting due to
-formation of electric double layer, calculated by a continuum model
-based on modified Young-Lippman theory. By using graphene as an
-example, we demonstrate that, the electrostatic interaction plays a
-major role in both the reorientation and electrowetting effects. By
-further considering the surface coverage of 2D materials, we evaluate
-the previous reported result on the doping-induced wetting behavior of
-graphene using the proposed multiscale model. We find that the
-existence of minor defects can cause great discrepancy between the
-observed wetting property and theoretical values, requesting attentive
-interpretation of the experimental results. Moreover, we quantify the
-tunability of interfacial tension in a gate-controlled
-2D-material-based electrowetting device as a function of the DOS of
-the 2D material, and rank several 2D materials according to their
-tunability. We show that 2D materials with higher DOS such as
-transition metal dichalcogenides (TMDCs), perform better than graphene
-by means of wettability regulation. Our findings provide a
-comprehensional view of the wettability of 2D materials, as well as
-guidance for operational liquid-phase 2D material-based devices.
-
+In this letter, we propose the first theoretical framework to model
+the change of interfacial tension between liquid and a sheet of
+monolayer 2D material. Multiscale physical phenomena are
+considered. At the atomic scale, we formulate the dependence of
+surface energy of a 2D material on the doping density using the
+quantum capacitance (QC) calculated by the density functional theory
+(DFT). Next, the surface-charge-induced reorientation of liquid
+molecules adjacent to the interface is associated with an N-body
+system, which is resolved by molecular dynamics (MD) simulations,
+allowing quantification of the interfacial tension in the absence of
+electrolytes in liquid. The effect of the electrical double layer
+(EDL) induced by the electrostatic interactions between the 2D
+material surface charges and the ionic species in liquid, is then
+addressed at the continuum level. Practical considerations, such as
+the defect density and the surface contamination are also taken into
+account. Finally, we examine and validate our theory by comparing with
+the contact angle changes reported in the electrowetting and the
+substrate-induced doping experiments.
 
 
 * Description of model                                               :ignore:
