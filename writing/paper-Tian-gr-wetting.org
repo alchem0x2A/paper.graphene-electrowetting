@@ -1,5 +1,5 @@
-#+LATEX_CLASS: revtex4-1
-#+LATEX_CLASS_OPTIONS: [aps,prl,reprint,groupedaddress,amsmath,amssymb, showpacs]
+#+LATEX_CLASS: achemso
+#+LATEX_CLASS_OPTIONS: [journal=ancac3,manuscript=article,email=true]
 #+LATEX_HEADER: \usepackage{graphicx}
 #+LATEX_HEADER: \usepackage{float}
 #+LATEX_HEADER: \usepackage{xcolor}
@@ -9,27 +9,25 @@
 #+OPTIONS: tex:t toc:nil todo:t author:nil date:nil title:nil ^:t tags:nil
 #+DESCRIPTION:
 
-# The RevTex class uses author and title inside the document
-#+NAME: title-stuff
-#+BEGIN_EXPORT latex 
-\title{A Multiscale View of the Doping-Induced Tunable Wettability on Two-Dimensional Materials}
-\author{Tian Tian} 
-  \affiliation{Institute for Chemical and Bioengineering, ETH Z{\"{u}}rich,  Vladimir Prelog Weg 1, CH-8093 Z{\"{u}}rich, Switzerland}
-\author{Elton J. G. Santos}
-  \affiliation{School of Mathematics and Physics, Queen's University Belfast, United Kingdom}
-  \affiliation{School of Chemistry and Chemical Engineering, Queen's University Belfast, United Kingdom}
-\author{Shangchao Lin}
-  \email{slin@eng.fsu.edu.}
-  \affiliation{Department of Mechanical Engineering, Materials Science and Engineering Program, FAMU-FSU College of Engineering, Florida State University, Tallahassee, Florida 32310, United States}
-\author{Chih-Jen Shih}
-  \email{chih-jen.shih@chem.ethz.ch}
-  \affiliation{Institute for Chemical and Bioengineering, ETH Z{\"{u}}rich,  Vladimir Prelog Weg 1, CH-8093 Z{\"{u}}rich, Switzerland}
+#+TITLE: Wettability of Doped Two-Dimensional Materials
 
-\date{\today}
-#+END_EXPORT
+#+LATEX_HEADER: \author{Tian Tian} 
+#+LATEX_HEADER:  \affiliation{Institute for Chemical and Bioengineering, ETH Z{\"{u}}rich,  Vladimir Prelog Weg 1, CH-8093 Z{\"{u}}rich, Switzerland}
+
+#+LATEX_HEADER: \author{Elton J. G. Santos}
+#+LATEX_HEADER:  \affiliation{School of Mathematics and Physics, Queen's University Belfast, United Kingdom}
+#+LATEX_HEADER:  \affiliation{School of Chemistry and Chemical Engineering, Queen's University Belfast, United Kingdom}
+
+#+LATEX_HEADER:  \author{Shangchao Lin}
+#+LATEX_HEADER:  \email{slin@eng.fsu.edu.}
+#+LATEX_HEADER:  \affiliation{Department of Mechanical Engineering, Materials Science and Engineering Program, FAMU-FSU College of Engineering, Florida State University, Tallahassee, Florida 32310, United States}
+#+LATEX_HEADER: \author{Chih-Jen Shih}
+#+LATEX_HEADER:  \email{chih-jen.shih@chem.ethz.ch}
+#+LATEX_HEADER:  \affiliation{Institute for Chemical and Bioengineering, ETH Z{\"{u}}rich,  Vladimir Prelog Weg 1, CH-8093 Z{\"{u}}rich, Switzerland}
 
 #+NAME: abstract
 #+BEGIN_EXPORT latex
+\newpage{}
 \begin{abstract}
   The emergence of 2D-material-based liquid-phase devices calls for
   the need for understanding the wetting property at the
