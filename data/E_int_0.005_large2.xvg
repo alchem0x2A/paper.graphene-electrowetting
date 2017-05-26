@@ -1,0 +1,17 @@
+
+Statistics over 5000001 steps [ 0.0000 through 10000.0000 ps ], 11 data sets
+All statistics are over 500001 points
+
+Energy                      Average   Err.Est.       RMSD  Tot-Drift
+-------------------------------------------------------------------------------
+LJ (SR)                     79182.2        8.4    710.188   -42.0479  (kJ/mol)
+Disper. corr.                -456.7    3.7e-06 8.63166e-09 1.45961e-10  (kJ/mol)
+Coulomb (SR)                -489119         22    1097.08     110.92  (kJ/mol)
+Coul. recip.                -9854.6       0.12    24.5091   0.593599  (kJ/mol)
+Potential                   -420249         14     634.03    69.4656  (kJ/mol)
+Coul-SR:UNK-UNK                   0          0          0          0  (kJ/mol)
+LJ-SR:UNK-UNK                     0          0          0          0  (kJ/mol)
+Coul-SR:UNK-rest           -19.4657      0.043    4.91634   0.226155  (kJ/mol)
+LJ-SR:UNK-rest              -841.68        0.5    22.7862  0.0223329  (kJ/mol)
+Coul-SR:rest-rest           -489100         22    1097.06    110.693  (kJ/mol)
+LJ-SR:rest-rest             80023.9        8.7    709.617   -42.0702  (kJ/mol)

@@ -1,0 +1,157 @@
+#+LATEX_CLASS: achemso
+#+LATEX_CLASS_OPTIONS: [journal=ancac3,manuscript=suppinfo,email=true]
+#+LATEX_HEADER: \usepackage{graphicx}
+#+LATEX_HEADER: \usepackage{float}
+#+LATEX_HEADER: \usepackage{xcolor}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usepackage{fontspec}
+#+DESCRIPTION:
+#+KEYWORDS:
+#+OPTIONS: tex:t toc:nil todo:t author:nil date:nil title:nil ^:t tags:nil
+#+DESCRIPTION:
+
+#+TITLE: Wettability of Doped Two-Dimensional Materials
+
+#+LATEX_HEADER: \author{Tian Tian} 
+#+LATEX_HEADER:  \affiliation{Institute for Chemical and Bioengineering, ETH Z{\"{u}}rich,  Vladimir Prelog Weg 1, CH-8093 Z{\"{u}}rich, Switzerland}
+
+#+LATEX_HEADER: \author{Elton J. G. Santos}
+#+LATEX_HEADER:  \affiliation{School of Mathematics and Physics, Queen's University Belfast, United Kingdom}
+#+LATEX_HEADER:  \affiliation{School of Chemistry and Chemical Engineering, Queen's University Belfast, United Kingdom}
+
+#+LATEX_HEADER:  \author{Shangchao Lin}
+#+LATEX_HEADER:  \email{slin@eng.fsu.edu.}
+#+LATEX_HEADER:  \affiliation{Department of Mechanical Engineering, Materials Science and Engineering Program, FAMU-FSU College of Engineering, Florida State University, Tallahassee, Florida 32310, United States}
+#+LATEX_HEADER: \author{Chih-Jen Shih}
+#+LATEX_HEADER:  \email{chih-jen.shih@chem.ethz.ch}
+#+LATEX_HEADER:  \affiliation{Institute for Chemical and Bioengineering, ETH Z{\"{u}}rich,  Vladimir Prelog Weg 1, CH-8093 Z{\"{u}}rich, Switzerland}
+
+\newpage{}
+* Figures
+** Dipole Orientation Profiles of MD Simulations
+#+BEGIN_SRC python :exports results 
+  import scipy
+  import numpy
+  import matplotlib
+  matplotlib.use("Agg")
+  import matplotlib.pyplot as plt
+  import pycse.orgmode as org
+
+  data = {}
+  file_root = "../data/orientation/cos/{}.txt"
+  names = ["-0.12", "0", "0.12", "water"]
+  name_strings = {
+      "-0.12": r"GL -0.012 $e$/atom",
+      "0": r"GL 0 $e$/atom",
+      "0.12": r"GL 0.012 $e$/atom",
+      "water": "L"
+  }
+
+  fig = plt.figure(figsize=(4.0, 3.0))
+  ax = fig.add_subplot(111)
+  matplotlib.style.use("science")
+
+  for name in names:
+      data[name] = numpy.genfromtxt(file_root.format(name))
+      ax.plot(data[name][:, 0], data[name][:, 1], label=name_strings[name])
+  ax.set_xlabel(r"$z$ (nm)")
+  ax.set_ylabel(r"$\cos\mu$")
+  ax.legend(loc=0)
+
+  org.figure(plt.savefig("../img/SI-dipole-profile.pdf"),
+             caption=("Dipole orientation "
+                      r"$\cos \mu$ "
+                      "as a function of "
+                      r"$z$ "
+                      "in MD simulations of different systems "
+                      "(L, and GL with varied graphene doping densities). "
+                      "The orientation at the water-vacuum interface ($z$=20 nm) "
+                      "is invariable in all cases, indicating a minimal effect of "
+                      "the long range Coulombic interaction on the selected interface."
+
+             ),
+             label="fig-SI-dipole",
+             attributes=[("latex", ":width 0.85\linewidth")]
+  )
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+#+CAPTION: Dipole orientation $\cos \mu$ as a function of $z$ in MD simulations of different systems (L, and GL with varied graphene doping densities). The orientation at the water-vacuum interface ($z$=20 nm) is invariable in all cases, indicating a minimal effect of the long range Coulombic interaction on the selected interface.
+#+LABEL: fig-SI-dipole
+#+ATTR_latex: :width 0.85\linewidth
+[[file:../img/SI-dipole-profile.pdf]]
+:END:
+
+\newpage{}
+** Hydrogen Bond Profiles of MD Simulations
+
+#+BEGIN_SRC python :exports results 
+  import scipy
+  import numpy
+  import matplotlib
+  matplotlib.use("Agg")
+  import matplotlib.pyplot as plt
+  import pycse.orgmode as org
+  from scipy.interpolate import interp1d
+
+  file_name = "../data/orientation/h-bond.txt"
+  names = ["-0.12", "0", "0.12", "water"]
+  columns = {"-0.12": 3,
+             "0": 2,
+             "0.12": 1,
+             "water": 4,
+  }
+  name_strings = {
+      "-0.12": r"GL -0.012 $e$/atom",
+      "0": r"GL 0 $e$/atom",
+      "0.12": r"GL 0.012 $e$/atom",
+      "water": "L"
+  }
+
+  fig = plt.figure(figsize=(4.0, 3.0))
+  data = numpy.genfromtxt(file_name, skip_header=1)
+  ax = fig.add_subplot(111)
+  matplotlib.style.use("science")
+
+  zz = numpy.linspace(min(data[:, 0]), max(data[:, 0]), 500)
+
+  for name in names:
+      f_H = interp1d(data[:, 0], data[:, columns[name]], kind="cubic")
+      HH = f_H(zz)
+      ax.plot(zz, HH, label=name_strings[name])
+      # ax.plot(data[:, 0], data[:, columns[name]], label=name_strings[name])
+  ax.set_xlabel(r"$z$ (nm)")
+  ax.set_ylabel(r"???")
+  ax.set_xlim(2, 6)
+  ax.set_ylim(0, 40)
+  ax.legend(loc=0)
+
+  org.figure(plt.savefig("../img/hydrogen-bond.pdf"),
+             caption=("Hydrogen bond strength as a function of "
+                      r"$z$ in MD simulations of various conditions "
+                      "(L, GL with graphene doping densities of "
+                      r"-0.012, 0 and 0.012 $e$/atom)."
+             ),
+             label="fig-H-bond",
+             attributes=[("latex", ":width 0.85\linewidth")]
+  )
+
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+#+CAPTION: Hydrogen bond strength as a function of $z$ in MD simulations of various conditions (L, GL with graphene doping densities of -0.012, 0 and 0.012 $e$/atom).
+#+LABEL: fig-H-bond
+#+ATTR_latex: :width 0.85\linewidth
+[[file:../img/hydrogen-bond.pdf]]
+:END:
+
+*************** TODO Ask Prof. Lin for unit and explanation of H-Bond result
+*************** END
+\newpage{}
+** Fitting of the $\Delta \Phi$ - $\sigma_{\mathrm{2D}}$ Data in MD Simulations
+#+NAME: fig-SI-fitting
+#+CAPTION: Fitting of $\Delta \Phi$ - $\sigma_{\mathrm{2D}}$ data from MD simulations with different polynomial functions. The 3rd degree polynomial function is chosen as the best fitting model.
+#+ATTR_LATEX: :width 0.85\linewidth
+[[file:../img/e-Phi-fitting.pdf]]
