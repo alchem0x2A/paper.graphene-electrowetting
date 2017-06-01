@@ -4,17 +4,20 @@ import matplotlib.pyplot as plt
 import scipy.constants as const
 import scipy
 import pycse.orgmode as org
+from scipy.interpolate import interp1d
 
-charge_per_atom = [-12, 0, 12]
+charge_per_atom = [-12, -6, 0, 6, 12]
+name = ["neg0.012", "neg0.006", "0.000", "0.006", "0.012"]
+label_name = ["-0.012", "-0.006", "0", "0.006", "0.012"]
 
 c_atom_to_sigma = lambda x: x*2/(2.465e-8**2*scipy.sin(scipy.pi/3))
-z_gr = 2.177
+z_gr = 1.980
 
-f_charge_base = "../data/MD/charge_int_%d.xvg"
-f_charge_water = "../data/_MD/charge_water_surf.xvg"
+f_charge_base = "../data/charge_int_{}_large2.xvg"
+f_charge_water = "../data/charge_int_water-surf.xvg"
 
-f_dens_base = "../data/MD/density_int_%d.xvg"
-f_dens_water = "../data/MD/density_water_surf.xvg"
+f_dens_base = "../data/density_int_{}_large2.xvg"
+f_dens_water = "../data/density_int_water-surf.xvg"
 
 charge_per_atom.sort()
 
@@ -26,33 +29,46 @@ d_water = numpy.genfromtxt(f_dens_water, delimiter=(12, 17), skip_header=19)
 def plot_den(fig, what="mass"):
     ax = fig.add_subplot(111)
     if what is "mass":
-        for c in charge_per_atom:
-            d_sys = numpy.genfromtxt(f_dens_base % c,
+        for index, c in enumerate(charge_per_atom):
+            d_sys = numpy.genfromtxt(f_dens_base.format(name[index]),
                                      delimiter=(12, 17), skip_header=19)
-            ax.plot(d_sys[:, 0] - z_gr,
-                    d_sys[:, 1], label=r"%d$\times10^{-3}$ $e$/atom" % (c))
-        ax.set_ylabel(r"$\rho_{\mathrm{w}}$ (kg$\cdot$m$^{-3}$)")
+            zz = numpy.linspace(d_sys[:, 0].min(), d_sys[:, 0].max(), 50000)
+            f_y = interp1d(d_sys[:, 0], d_sys[:, 1], kind="cubic")
+            yy = f_y(zz)
+            # ax.plot(d_sys[:, 0] - z_gr,
+                    # d_sys[:, 1], label=r"%d$\times10^{-3}$ $e$/atom" % (c))
+            ax.plot(zz - z_gr,
+                    yy, label=r"%s $e$/atom" % (label_name[index]))
+        ax.set_ylabel(r"$\rho_{\mathrm{L}}$ (kg$\cdot$m$^{-3}$)")
         ax.set_xlabel(r"$z$ (nm)")
-        ax.set_xlim(0, 1.5)
-        ax.legend(loc=0)
+        ax.set_xlim(0, 1)
+        ax.legend(loc=0, title=r"$\sigma_{\mathrm{2D}}$")
     elif what is "charge":
-        for c in charge_per_atom:
-            c_sys = numpy.genfromtxt(f_charge_base % c,
+        for index, c in enumerate(charge_per_atom):
+            c_sys = numpy.genfromtxt(f_charge_base.format(name[index]),
                                      delimiter=(12, 17), skip_header=19)
-            ax.plot(c_sys[:, 0] - z_gr, c_sys[:, 1],
-                    label=r"%d$\times10^{-3}$ $e$/atom" % (c) )
-        ax.set_ylabel(r"$\delta_{\mathrm{w}}$ ($e\cdot$nm$^{-3}$)")
+            zz = numpy.linspace(c_sys[:, 0].min(), c_sys[:, 0].max(), 50000)
+            f_y = interp1d(c_sys[:, 0], c_sys[:, 1], kind="cubic")
+            yy = f_y(zz)
+            # ax.plot(c_sys[:, 0] - z_gr, c_sys[:, 1],
+                    # label=r"%d$\times10^{-3}$ $e$/atom" % (c) )
+            ax.plot(zz - z_gr, yy,
+                    label=r"%s $e$/atom" % (label_name[index]) )
+        ax.set_ylabel(r"$\delta_{\mathrm{L}}$ ($e\cdot$nm$^{-3}$)")
         ax.set_xlabel(r"$z$ (nm)")
-        ax.set_xlim(0, 1.5)
-        ax.legend(loc=0)
+        ax.set_xlim(0, 1)
+        ax.legend(loc=0, title=r"$\sigma_{\mathrm{2D}}$")
 
-    fig.tight_layout(pad=0)
+    fig.tight_layout(pad=0.05)
 
 if __name__ == "__main__":
-    fig = plt.figure()
+    matplotlib.style.use("science")
+
+    fig = plt.figure(figsize=(2.5, 2.5))
     plot_den(fig, what="mass")
-    org.figure(plt.savefig("../img/density_m.pdf"))
+    org.figure(plt.savefig("../img/density_m_small.pdf"))
     plt.cla()
-    fig = plt.figure()
+
+    fig = plt.figure(figsize=(2.5, 2.5))
     plot_den(fig, what="charge")
-    org.figure(plt.savefig("../img/density_c.pdf"))
+    org.figure(plt.savefig("../img/density_c_small.pdf"))

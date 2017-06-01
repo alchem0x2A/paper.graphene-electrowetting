@@ -137,11 +137,11 @@ def plot_Phi_charge(fig, error=False):
     ax1 = fig.add_subplot(111)
     ax2 = ax1.twiny()           # For the charge
     # ax3 = ax1.twinx()           # For the surface tension
-    l_tot = ax1.plot(n_2D, potential_tot, 's',
+    l_tot = ax1.plot(n_2D, potential_tot, 's', markersize=5,
                      label=r"$\Delta \Phi_{\mathrm{Coul}} + \Delta \Phi_{\mathrm{LJ}}$")
-    l_vdw = ax1.plot(n_2D, vdW_tot, 's',
+    l_vdw = ax1.plot(n_2D, vdW_tot, 's', markersize=5,
              label=r"$\Delta \Phi_{\mathrm{LJ}}$")
-    l_cl = ax1.plot(n_2D, coulomb_tot, 's',
+    l_cl = ax1.plot(n_2D, coulomb_tot, 's', markersize=5,
                     label=r"$\Delta \Phi_{\mathrm{Coul}}$")
     if error is True:
         ax1.fill_between(sigma/10**13,
@@ -157,7 +157,7 @@ def plot_Phi_charge(fig, error=False):
     ax1.set_xlabel(r"$\sigma_{\mathrm{2D}}$ ($10^{13}$ $e\cdot$cm$^{-2}$)")
     ax1.set_ylabel(r"$\Delta \Phi$ (mJ$\cdot$m$^{-2}$)")
     ax1.legend(loc=0, frameon=True)
-    ax1.set_xlim(-4, 4)
+    # ax1.set_xlim(-4, 4)
     # ax1.set_ylim(-10, 15)
     # Change the second x axis
 
@@ -166,7 +166,7 @@ def plot_Phi_charge(fig, error=False):
     ax2.set_xticklabels(list(map(lambda s: "%.0f" % s, ax2_ticks*1000)))
     ax2.set_xlim(ax1.get_xlim())
     ax2.set_xlabel("$\sigma_{\mathrm{2D}}$ (10$^{-3}$ $e$/atom)")
-    fig.tight_layout(pad=0)
+    fig.tight_layout()
 
 def plot_fitting(fig):
     ax = fig.add_subplot(111)
@@ -214,10 +214,12 @@ def plot_fitting(fig):
 
 
 if __name__ == "__main__":
-    fig = plt.figure()
+    matplotlib.style.use("science")
+
+    fig = plt.figure(figsize=(3, 3))
     plot_Phi_charge(fig)
     org.figure(plt.savefig("../img/e-vdw-2.pdf"))
 
-    fig = plt.figure()
+    fig = plt.figure(figsize=(5, 5))
     plot_fitting(fig)
     org.figure(plt.savefig("../img/e-Phi-fitting.pdf"))

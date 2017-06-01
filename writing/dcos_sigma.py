@@ -85,7 +85,7 @@ def plot_ph_dep(fig, MD=False):
                         facecolor="k",
                         edgecolor=None,))
     else:
-        ax.text(0, 0.10,
+        ax.text(-0.8, 0.10,
                 s=r"$c_{0}=10^{0}$~$10^{-7}$ mol$\cdot$L$^{-1}$",
                 ha="center",
                 va="center")
@@ -121,7 +121,7 @@ def plot_theta_2D(fig):
     fig.tight_layout(pad=0)
 
 if __name__ == "__main__":
-    fc = FigureCollection(pagesize=(4, 7),
+    fc = FigureCollection(pagesize=(3, 5.5),
                           figure_style="science",
                           col=1, row=9)
     # fc.fc_param["figure.lpad"] = 0.02
@@ -136,15 +136,15 @@ if __name__ == "__main__":
     fig3, num2 = fc.add_figure(loc=(0, 6, 1, 3), label=True)
     fig3.set_plot_func(plot_ph_dep, MD=True)
     org.figure(fc.save_all("../img/2d-ph-dependency+MD.pdf", outline=False),
-	       label="fig:res-EDL",
-	       caption=("(a) Scheme of the interface between the 2D material "
+               label="fig:res-EDL",
+               caption=("(a) Scheme of the interface between the 2D material "
                         "and the aqueous phase. "
                         r"(b) $(\Delta\cos\theta)^{\mathrm{EDL}}$ "
                         "as a function of "
                         r"$\sigma_{\mathrm{2D}}$ with varied solute concentrations. "
                         r"The concentration $c_{0}$ varies from "
                         r"$10^{0}$ to $10^{-7}$ mol$\cdot\mathrm{L}^{-1}$ "
-                        r"(c) Overall change of contact angle $(\cos \theta)^{\mathrm{Orien+EDL}}$ "
+                        r"(c) Overall change of contact angle $(\Delta \cos \theta)^{\mathrm{Orien+EDL}}$ "
                         "combining the orientation and EDL effects, "
                         "with varied solute concentrations as in (b)."),
-	       attributes=[("latex", ":width 0.65\linewidth")])
+               attributes=[("latex", ":width 0.5\linewidth")])

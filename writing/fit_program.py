@@ -130,22 +130,28 @@ def plot_fitting_f(fig):
                 xerr=n_err_esem, yerr=dcos_err_esem,
                          fmt="s", label="ESEM Data",)
     l_elw = ax.plot(n_elw, dcos_elw, "o", label="Electrowetting Data")
-    ax.text(x=-0.85, y=0.25, ha="left", size="medium",
+    ax.text(x=-0.85, y=0.25, ha="left", size="small",
             s= "".join((r"$f$=",
-	                "{:.3f}\n".format(f_elw),)
-	                ),
+                        "{:.3f}\n".format(f_elw),
+                        r"$\sigma_{0}$",
+                        "={:.1f}".format(sigma_i_elw*10),
+                        r"$\times 10^{12}$",
+                          r" $e\cdot$cm$^{-2}$",))
     )
     ax.plot(nn_elw, dd_elw + dcos_plt, "--", alpha=0.5, color=l_elw[0].get_color())
     ax.plot(nn_esem, dd_esem + dcos_plt, "--", alpha=0.5, color=l_esem[0].get_color())
 
-    ax.text(x=0.85, y=0.2, ha="left", size="medium",
+    ax.text(x=0.55, y=-0.04, ha="left", size="small",
             s= "".join((r"$f$=",
-	                "{:.3f}\n".format(f_esem),)
-	                ),
-    )
+                        "{:.3f}\n".format(f_esem),
+                        r"$\sigma_{0}$",
+                        "={:.1f}".format(sigma_i_esem*10),
+                        r"$\times 10^{12}$",
+                          r" $e\cdot$cm$^{-2}$",))
+                        )
     ax.set_xlabel(r"$\sigma_{\mathrm{2D}}$ ($10^{13}$ $e\cdot$cm$^{-2}$)")
     ax.set_ylabel(r"$\Delta\cos\theta$")
-    ax.legend(loc=0)
+    ax.legend(loc=0, frameon=True)
     ax.set_xlim(-2, 2)
     ax.set_ylim(-0.05, 0.5)
     fig.tight_layout()
@@ -156,9 +162,9 @@ fig = plt.figure(figsize=(4.0, 3.0))
 if __name__ == "__main__":
     plot_fitting_f(fig)
     org.figure(plt.savefig("../img/plot-fitting.pdf"),
-	       attributes=[("latex", ":width 0.95\linewidth")],
-	       label="fig:f-nc-exp",
-	       caption=("Theoretical and fitted experimental data of "
+               attributes=[("latex", ":width 0.95\linewidth")],
+               label="fig:f-nc-exp",
+               caption=("Theoretical and fitted experimental data of "
                         r"$\Delta\cos\theta$ "
                         "as a function of "
                         r"$\sigma_{\mathrm{2D}}$. "
