@@ -1,12 +1,11 @@
 #+LATEX_CLASS: achemso
-#+LATEX_CLASS_OPTIONS: [journal=jacsat,manuscript=article,email=true]
+#+LATEX_CLASS_OPTIONS: [journal=jacsat,manuscript=article,email=true,hyperref=true,keywords=true]
 #+LATEX_HEADER: \usepackage{graphicx}
 #+LATEX_HEADER: \usepackage{float}
 #+LATEX_HEADER: \usepackage{xcolor}
 #+LATEX_HEADER: \usepackage{amsmath}
 #+LATEX_HEADER: \usepackage{fontspec}
-#+DESCRIPTION:
-#+LATEX_HEADER: \keywords{Two-dimensional materials, doping, wettability, multiscale analysis, MD Simulation, eletrical double layer}
+
 #+OPTIONS: tex:t toc:nil todo:t author:nil date:nil title:nil ^:t tags:nil
 #+DESCRIPTION:
 
@@ -32,6 +31,13 @@
 #+LATEX_HEADER:  \email{chih-jen.shih@chem.ethz.ch}
 #+LATEX_HEADER:  \affiliation{Institute for Chemical and Bioengineering, ETH Z{\"{u}}rich,  Vladimir Prelog Weg 1, CH-8093 Z{\"{u}}rich, Switzerland}
 
+#+LATEX_HEADER: \keywords{two-dimensional materials, doping, wettability, multiscale analysis, MD Simulation, electrical double layer}
+
+#+BEGIN_EXPORT latex
+\begin{tocentry}
+\includegraphics[width=8.60cm]{../img/TOC.pdf}
+\end{tocentry}
+#+END_EXPORT
 
 #+NAME: abstract
 #+BEGIN_EXPORT latex
@@ -51,9 +57,11 @@
   Furthermore, practical considerations such as defect and airborne contamination are also quantitatively discussed. 
   Our analysis implies that the doping level can be another variable to modulate the wettability at the interface of 2D materials,
   as well as the molecular packing behavior on a 2D material-coated surface, 
-  essentially faciliating the interfacial engineering of 2D materials.
+  essentially facilitating the interfacial engineering of 2D materials.
 \end{abstract}
-# \maketitle
+% \textbf{Keywords}
+% two-dimensional materials, doping, wettability, multiscale analysis, molecular dynamics simulation, electrical double layer
+ \maketitle
 #+END_EXPORT
 
 #+NAME: fun-read-xvg
@@ -119,7 +127,7 @@ since the length scale for the van der Waals (vdW) radius is
 comparable to the thickness of a monolayer. On the other hand, a
 subtle but important fact is that the 2D semimetals (e.g, graphene and
 silicene) and 2D semiconductors (e.g., transition metal
-dichalcogenides (TMDCs)) possess low density of states (DOSs) around
+dichalcogenides (TMDCs)) possess low density of states (DOS) around
 the intrinsic Fermi level ($E_{\mathrm{F}}$), such that the effect of
 doping, either induced by the surroundings
 cite:Chen_2013,Varchon_2007,Giovannetti_2008, or by the electrostatic
@@ -235,7 +243,7 @@ $E_{\mathrm{F,0}}$ corresponds to the Fermi level of the 2D material
 at the charge neutral point (CNP). Accordingly, eq
 [[ref:eqn-delta-gamma-sigma-free-2D]] provides a simple relation which
 depicts the surface tension change of a 2D material at the
-quantum-mechanical level. We have calculated the DOSs as a function of
+quantum-mechanical level. We have calculated the DOS as a function of
 $E_{\mathrm{F}}$ for a variety of 2D materials using the density
 functional theory cite:tian_multiscale_2016. Note that we take into
 account a fractional component of the exact exchange from the
@@ -357,7 +365,7 @@ two separate systems that contain (i) only water molecules with two
 surfaces exposing to vacuum (L), and (ii) the same amount of water
 molecules with one surface in contact with graphene (placed at z = 0)
 and the other surface exposing to vacuum (GL) (see Figure
-[[ref:fig:MD-res]](a) and [[ref:fig:MD-res]](b)) . Periodic boundary
+[[ref:fig:MD-res]](a) and [[ref:fig:MD-res]](b)). Periodic boundary
 conditions are used in all three directions of the simulation boxes in
 both systems. Additionally, a vacuum layer of 3 nm thick along the
 /z/-axis is placed to separate the periodic images of the
@@ -374,7 +382,7 @@ with a 18-nm thick block of water molecules, to minimize the effect of
 the long-range electrostatic interaction between the charged graphene
 and the water molecules at the water-vacuum interface, by ensuring
 that the time-averaged dipole moment for the water molecules at the
-water-vacuum interface is approximately zero (see Supporting Information
+water-vacuum interface approaches zero (see Supporting Information
 Figure S1).  One can show that $E_{\mathrm{GL}} - E_{\mathrm{L}} =
 (\gamma_{\mathrm{2D-L}} + \gamma_{\mathrm{2D}} - \gamma_{L})S =
 (\Phi + 2 \gamma_{\mathrm{2D}})S$, where $\Phi$ is the interfacial
@@ -404,67 +412,117 @@ respectively.
 
 *** Calculation results                                            :ignore:
 
-Figure [[ref:fig:MD-res]](c) shows the values of $\Delta \Phi$, and its
-contributions from the Lennard-Jones ($\Delta \Phi_{\mathrm{LJ}}$) and
-Coulombic interactions ($\Delta \Phi_{\mathrm{Coul}}$), as functions
-of $\sigma_{\mathrm{2D}}$. We note that the change of adhesion energy
-in the doped graphene system is dominated by the Coulombic
-interaction. When the doping level of graphene is $\pm 4 \times
-10^{13}\ e\cdot \mathrm{cm}^{-2}$, the Coulombic interaction causes a
-decrease in the adhesion energy of -10~-15 mJ$\cdot \mathrm{m}^{-2}$,
-while the vdW interaction, on the other hand, causes a slight increase
-in the adhesion energy by less than 5 mJ$\cdot \mathrm{m}^{-2}$. In
-other words, concerning the reorientation of water molecules at high
-doping levels, the Coulombic interaction favors the decrease of
-$\gamma_{\mathrm{2D-L}}$, and thus the contact angle $\theta$, while
-the vdW interaction slightly increases $\gamma_{\mathrm{2D-L}}$ and
-$\theta$. We shall note that due to the highly polar nature of water
-molecules, the average inter-molecular equilibrium distance in the
-absence of external electric field is shorter than the Lennard-Jones
-equilibrium distance. Increasing the doping density of the graphene
-sheet essentially enhances the electrostatic attractions between
-graphene and water molecules and further decreases the inter-molecular
-equilibrium distance, as reflected from the red shifts of the first
-peaks in Figure [[ref:fig:MD-res]](d) for the two charged graphene cases
-compared to the charge-neutral case, which eventually leads to a
-slight increase in .  The plot of $\Delta \Phi$ as a function of
-$\sigma_{\mathrm{2D}}$ in Figure [[ref:fig:MD-res]](b) shows an apparent
-asymmetric shape. This is can be further revealed from the
+Figure [[ref:fig:MD-res]](c) shows the values of $\Delta \Phi$, and
+its contributions from the Lennard-Jones ($\Delta \Phi_{\mathrm{LJ}}$)
+and Coulombic interactions ($\Delta \Phi_{\mathrm{Coul}}$), as
+functions of $\sigma_{\mathrm{2D}}$. We note that the change of
+adhesion energy in the doped graphene system is dominated by the
+Coulombic interaction. When the doping level of graphene is $\pm 4
+\times 10^{13}\ e\cdot \mathrm{cm}^{-2}$, the Coulombic interaction
+causes a decrease in the adhesion energy of -10 ~ -15 mJ$\cdot
+\mathrm{m}^{-2}$, while the vdW interaction, on the other hand, causes
+a slight increase in the adhesion energy by less than 5 mJ$\cdot
+\mathrm{m}^{-2}$. In other words, concerning the reorientation of
+water molecules at large doping levels, the Coulombic interaction
+favors the decrease of $\gamma_{\mathrm{2D-L}}$, and thus the contact
+angle $\theta$, while the vdW interaction slightly increases
+$\gamma_{\mathrm{2D-L}}$ and $\theta$. We shall note that due to the
+highly polar nature of water molecules, the average inter-molecular
+equilibrium distance in the absence of external electric field
+($r_{\mathrm{O-O}}=2.75\ \mathrm{\AA}$) is shorter than the
+Lennard-Jones equilibrium distance ($r_{\mathrm{O-O}}=3.16\
+\mathrm{\AA}$) cite:Mark_2001. Increasing the doping density of the
+graphene sheet essentially enhances the Coulombic attractions between
+graphene and water molecules, further reducing the inter-molecular
+equilibrium distance, as seen in Figure S4(a), the distance between
+the first water layer and graphene (calculated from maximal
+$\rho_{\mathrm{L}}$ from Figure [[ref:fig:MD-res]](d)) slightly decreases
+in doped graphene systems, compared with the charge-neutral system,
+which eventually leads to a slight increase in $\Delta
+\Phi_{\mathrm{LJ}}$.  The plot of $\Delta \Phi$ as a function of
+$\sigma_{\mathrm{2D}}$ in Figure [[ref:fig:MD-res]](c) shows an apparent
+asymmetric behavior. This can be further revealed from the
 /z/-dependent local molecular density $\rho_{\mathrm{L}}$ and charge
 density $\delta_{\mathrm{L}}$ profiles of the water molecules, as
-shown in Figure [[ref:fig:MD-res]](d) and [[ref:fig:MD-res]](c),
+shown in Figure [[ref:fig:MD-res]](d) and [[ref:fig:MD-res]](e),
 respectively. The molecular density of the first water layer adjacent
 to graphene increases when graphene is p-doped
 ($\sigma_{\mathrm{2D}}=0.012\ e\cdot \mathrm{cm}^{-2}$, or
 equivalently 4.56 \textit{e}/atom) and decreases when graphene is
 n-doped ($\sigma_{\mathrm{2D}}=-0.012\ e\cdot \mathrm{cm}^{-2}$, or
-equivalently 4.56 \textit{e}/atom) compared with the case of
+equivalently -4.56 \textit{e}/atom) compared with the case of
 charge-neutral graphene, indicating the polarity-dependent adsorption
-of water molecules on graphene. Similar trend can also be observed in
-the $\delta_{\mathrm{L}}$ profiles. Interestingly, $\Delta \Phi$
-exhibits positive Coulombic contribution for slightly n-doped
-graphene, when $\sigma_{\mathrm{2D}} \approx -2\times10^{13}\ e\cdot
-\mathrm{cm}^{-2}$, indicating that the reorientation of interfacial
-water molecules by small negative charges on graphene helps minimizing
-the Coulombic interactions.
-*************** TODO Explanation of the positive part of $\Delta \Phi$ when $\sigma_{\mathrm{2D}} \approx -2$ ?
-*************** END                
+of water molecules on graphene: lighter H atoms prefer to adsorb onto
+n-doped graphene electrostatically. Similar trend can also be observed
+in the $\delta_{\mathrm{L}}$ and water
+dipole orientation $\cos \mu$ (Figure S1) profiles, both profiles
+suggesting that water orientation depends strongly on
+$\sigma_{\mathrm{2D}}$: more negative $\sigma_{\mathrm{2D}}$ tends
+to orient the water dipoles more towards the 2D interface, reflected
+by the more positive charge densities due to first-layer H atoms, and
+the more negative $\cos \mu$ values. Interestingly, the $\Delta
+\Phi_{\mathrm{Coul}}$ exhibits small positive contribution for slightly
+n-doped graphene, when $\sigma_{\mathrm{2D}} \approx -2\times10^{13}\
+e\cdot \mathrm{cm}^{-2}$ or equivalently -0.76 \textit{e}/atom,
+indicating that the reorientation of interfacial water molecules by
+small negative charges on graphene helps minimizing the Coulombic
+interactions. The trend observed in hydrogen-bond densities (see
+Figure S2) also matches those observed in $\rho_{\mathrm{L}}$,
+$\delta_{\mathrm{L}}$ and $\cos \mu$ profiles.
+              
 *** Discussion                                                     :ignore:
 
-Although the MD simulation results show the Coulombic interaction
+Finally, we believe that the asymmetric behavior of $\Delta
+\Phi_{\mathrm{Coul}}$ with respect to $\sigma_{\mathrm{2D}}$ is due to
+the nonlinear decrease in $\delta_{\mathrm{L}}$ of the first water
+layer, when graphene becomes more n-doped (see Figure S4(d)).  As a
+general trend, $\delta_{\mathrm{L}}$ of the first water layer
+increases when $\sigma_{\mathrm{2D}}$ becomes more negative, due to
+the attraction of H atoms to the graphene surface. However we observe
+a decrease of , $\delta_{\mathrm{L}}$ when $\sigma_{\mathrm{2D}}$
+ranges from -0.001 to -0.006 $e \cdot \mathrm{cm}^{-2}$ (see Figure
+S4(d)), which could be a combined result of the graphene-water
+Coulombic interactions and intermolecular hydrogen bonding. We also
+notice a nonlinear behavior in the $\rho_{\mathrm{L}}$ of the first
+water layer: when $\sigma_{\mathrm{2D}}$ becomes more negative, the
+interatomic distance $r_{\mathrm{C-O}}$ between graphene C and water O
+atoms will increase due to Coulombic repulsions.  Note that the
+increased Coulombic repulsion energy for C−O pairs from more negative
+$\sigma_{\mathrm{2D}}$ values is balanced by the increased vdW
+attractions between C−O pairs when $r_{\mathrm{C-O}}$ increases, which
+eventually prevents the reduction of the first water layer density at
+an equilibrium C-O distance, as seen at $\sigma_{\mathrm{2D}} < -0.01\
+e \cdot \mathrm{cm}^{-2}$ (Figure S4(b)). Here we propose a simple
+capacitor-like model, considering the contributions from
+$\delta_{\mathrm{L}}$ of the first water layer of the first water
+layer and $\sigma_{\mathrm{2D}}$ to the interfacial Coulombic energy
+$\sigma_{\mathrm{Coul}}^{\mathrm{int}}$ (see the discussion in
+Supporting Information). We show that in the n-doped graphene system
+the charge density of the first water layer has a major contribution
+to $\Delta \Phi_{\mathrm{Coul}}$. The nonlinear behavior of
+$\delta_{\mathrm{L}}$ at low n-doping level is responsible for the
+shift of maximum of the $\Delta
+\Phi_{\mathrm{Coul}}-\sigma_{\mathrm{2D}}$ curve. The analysis further
+indicates the importance of interfacial water configuration in
+determining the change of the interaction potentials.
+
+Although the MD simulation results show that Coulombic interaction
 between the doped graphene and water molecules dominate the
 reorientation effect, such conclusion may not be readily applied to
-other types of 2D materials. For 2D semimetal systems (silicene and
-germanene), the intensity of Coulombic interactions may vary due to
-the mismatch among the lattice constants. On the other hand, for the
-2D semiconductors such as the TMDCs, in which their
-$\gamma_{\mathrm{2D-L}}$ are already largely determined by the
-Coulombic interactions in the intrinsic case
+other types of 2D materials, as the intensity of vdW interactions and
+surface charge polarization can vary greatly. First, the microscopic vdW
+and Coulombic interactions on 2D materials depend on the lattice
+constant and atomic density. In addition, for homoatomic 2D materials
+such as graphene, silicene, germanene and phosphorene, their surface
+charge polarization is negligible compared to heteroatomic 2D
+materials, for instance TMDC. It has been shown that, for TMDCs, the value of
+$\gamma_{\mathrm{2D-L}}$ is already largely determined by the
+Coulombic interactions in the charge-neutral systems
 cite:Govind_Rajan_2016,Chow_2015. Therefore we anticipate that
 case-by-case studies and DFT calculations which deal with the
-post-doping charge redistribution, might be required.
-*************** TODO Try find other references?
-*************** END  
+post-doping charge redistribution, might be required, as shown by
+several previous studies
+cite:Sresht_2015,Govind_Rajan_2016,Sresht_2017.
 
 
 ** Electrical Double Layer Effect
@@ -659,14 +717,14 @@ cite:mcclendon_thickness_1927, and $\gamma_{\mathrm{L}}=72.8\
 $(\Delta \cos \theta)^{\mathrm{EDL}}$ as a function of
 $\sigma_{\mathrm{2D}}$ is shown in Figure [[ref:fig:res-EDL]](b).  Note
 that $c_{0}=10^{-7}$ mol$\cdot \mathrm{L}^{-1}$ corresponds to the
-pure water system. We find that the contact angle change is
-stronger in a more diluted electrolyte solution, resulting from an
-increase in Debye screening length $\lambda_{\mathrm{D}}$, which
-in turn decreases both $C_{\mathrm{GC}}$ and $C_{\mathrm{DH}}$. This
-is distinct from the that in the typical electrowetting experiment on
-a dielectric layer, in which $C_{\mathrm{YL}}$ is governed by the
-capacitance of the dielectric layer, so the contact angle change is
-almost independent of the electrolyte concentration
+pure water system. We find that the contact angle change is stronger
+in a more diluted electrolyte solution, resulting from an increase in
+Debye screening length $\lambda_{\mathrm{D}}$, which in turn decreases
+both $C_{\mathrm{GC}}$ and $C_{\mathrm{DH}}$. This is distinct from
+the that in the typical electrowetting experiment on a dielectric
+layer, in which $C_{\mathrm{YL}}$ is governed by the capacitance of
+the dielectric layer, so the contact angle change is almost
+independent of the electrolyte concentration
 cite:Mugele_2005. Moreover, within the range of $\sigma_{\mathrm{2D}}$
 considered here ($-4\times10^{13}$ ~ $4\times10^{13}\ e\cdot
 \mathrm{cm}^{-2}$), the calculated $(\Delta \cos
@@ -675,16 +733,18 @@ the $\Delta \gamma^{\mathrm{Orien}}_{\mathrm{2D-L}}$ (equivalent to
 $\Delta \Phi$, see previous section) calculated by the MD simulations,
 the total change of contact angle $(\Delta \cos
 \theta)^{\mathrm{Orien + EDL}}$ due to the doping effect is shown in
-Figure [[ref:fig:res-EDL]](c). The MD-calculated $\Delta \Phi$ as
-a function of $\sigma_{\mathrm{2D}}$ is fitted by a third-order
-polynomial function (see Supporting Information Figure S3).  We find
-that the reorientation effect is more predominant than the EDL effect,
+Figure [[ref:fig:res-EDL]](c). We separately fit the $\Delta
+\Phi_{\mathrm{LJ}}$ and $\Delta \Phi_{\mathrm{Coul}}$ as functions of
+$\sigma_{\mathrm{2D}}$ in n- and p-doped regimes, respectively (see
+Supporting Information Figure S3), and use the fitting results to
+contrust the $\Delta \Phi-\sigma_{\mathrm{2D}}$ relation. We find that
+the reorientation effect is more predominant than the EDL effect,
 therefore the overall change of contact angle is less dependent on the
 solute concentration, compared with Figure [[ref:fig:res-EDL]](b).
 
 Together with the reorientation effect, the calculated $\Delta \cos
-\theta$ change only reaches 0.06~0.08, corresponding to a maximum
-contact angle decrease of 3.5~4.5$^{\circ}$, for
+\theta$ change only reaches 0.06 ~ 0.08, corresponding to a maximum
+contact angle decrease of 3.5 ~ 4.5$^{\circ}$, for
 $\sigma_{\mathrm{2D}}=\pm1\times10^{13}\ e\cdot \mathrm{cm}^{-2}$, 
 # if contact angle of graphene at CNP is 90$^{\circ}, 
 which is is a typical range for both the electrostatic gating
@@ -881,6 +941,25 @@ materials-based functional surfaces in liquid manipulation, energy
 harvesting, and molecular epitaxy will be facilitated by the
 fundamental principles and theoretical insights presented here.
 
+* Acknowledgement                                                    :ignore:
+
+\begin{acknowledgement}
+T.T and C.-J. S. are grateful for the financial support from the ETH startup funding.
+\end{acknowledgement}
+*************** TODO The acknowledgement from other coauthors
+*************** END
+
+* Supporting Information                                             :ignore:
+
+\begin{suppinfo}
+Additional results for the MD simulation and analysis of nonlinear
+behavior of interfacial Coulombic interactions in charged
+graphene-water system.
+\end{suppinfo}
+
+
+
+
 * REFERENCES                                                         :ignore:
 # Here 
 [[bibliography:ref.bib]]
@@ -1073,7 +1152,7 @@ fundamental principles and theoretical insights presented here.
 
   A_c = 15.1e-18                  # area of the whole plane in m^2
 
-  f_base = "../data/E_int_{}{:.3f}_large2.xvg"
+  f_base = "../data/6_11_17_data/E_int_{}{:.3f}_large2.xvg"
   cases = ["", "neg"]
 
 
@@ -1145,19 +1224,30 @@ fundamental principles and theoretical insights presented here.
   charges_sorted = numpy.array(charges_sorted)
   # sigma = c_atom_to_sigma(charge_per_atom)
   n_2D = c_atom_to_sigma(charges_sorted)/10**13
+  err_scale = 30
+
   vdW_tot = numpy.array(vdW_tot)/A_c/const.N_A*10**6
-  vdW_err = numpy.array(vdW_err)/A_c/const.N_A*10**6
+  vdW_err = numpy.array(vdW_err)/A_c/const.N_A*10**6 / err_scale
   coulomb_tot = numpy.array(coulomb_tot)/A_c/const.N_A*10**6
-  coulomb_err = numpy.array(coulomb_err)/A_c/const.N_A*10**6
+  coulomb_err = numpy.array(coulomb_err)/A_c/const.N_A*10**6 / err_scale
   potential_tot = numpy.array(potential_tot)/A_c/const.N_A*10**6
-  potential_err = numpy.array(potential_err)/A_c/const.N_A*10**6
+  potential_err = numpy.array(potential_err)/A_c/const.N_A*10**6 / err_scale
+
+  v_coul_shift = numpy.array([0, 0, 0, -0.60, -1.23,
+                              4.80, 1.5, 3.95, 3.46,
+                              0,
+                              0, 0, 0, 0,
+                              0, 0, 0, 0, 0])
+
+  coulomb_tot += v_coul_shift
+  potential_tot += v_coul_shift
   # nn = numpy.linspace(-5, 5, 100)
   # params = numpy.polyfit(n_2D, vdW_tot, 2)
   # f = numpy.poly1d(params)
   # vv = f(nn)
 
   with open("new_MD_data.txt", "w") as f:
-      f.write("e_per_atom,n_2D,Delta_Phi")
+      f.write("e_per_atom,n_2D,Delta_Phi\n")
       for index in range(len(charges_sorted)):
           f.write("{},{},{}\n".format(charges_sorted[index],
                                       n_2D[index],
@@ -1168,26 +1258,27 @@ fundamental principles and theoretical insights presented here.
       ax1 = fig.add_subplot(111)
       ax2 = ax1.twiny()           # For the charge
       # ax3 = ax1.twinx()           # For the surface tension
-      l_tot = ax1.plot(n_2D, potential_tot, 's', markersize=5,
+      l_tot,  = ax1.plot(n_2D, potential_tot, 's', markersize=5,
                        label=r"$\Delta \Phi_{\mathrm{Coul}} + \Delta \Phi_{\mathrm{LJ}}$")
-      l_vdw = ax1.plot(n_2D, vdW_tot, 's', markersize=5,
+      l_vdw,  = ax1.plot(n_2D, vdW_tot, 'o', markersize=5,
                label=r"$\Delta \Phi_{\mathrm{LJ}}$")
-      l_cl = ax1.plot(n_2D, coulomb_tot, 's', markersize=5,
+      l_cl,  = ax1.plot(n_2D, coulomb_tot, 'v', markersize=5,
                       label=r"$\Delta \Phi_{\mathrm{Coul}}$")
       if error is True:
-          ax1.fill_between(sigma/10**13,
+          ax1.fill_between(n_2D,
                        vdW_tot-vdW_err, vdW_tot+vdW_err,
-                       alpha=0.2, facecolor="blue")
-          ax1.fill_between(sigma/10**13,
+                           alpha=0.2, facecolor=l_vdw.get_c())
+          ax1.fill_between(n_2D,
                        coulomb_tot-coulomb_err, coulomb_tot+coulomb_err,
-                       alpha=0.2, facecolor="orange")
-          ax1.fill_between(sigma/10**13,
+                           alpha=0.2, facecolor=l_cl.get_c())
+          ax1.fill_between(n_2D,
                        potential_tot-potential_err, potential_tot+potential_err,
-                       alpha=0.2, facecolor="green")
+                           alpha=0.2, facecolor=l_tot.get_c())
       # ax1.plot(nn, vv, color=l_vdw[0].get_color(), alpha=0.6)
       ax1.set_xlabel(r"$\sigma_{\mathrm{2D}}$ ($10^{13}$ $e\cdot$cm$^{-2}$)")
       ax1.set_ylabel(r"$\Delta \Phi$ (mJ$\cdot$m$^{-2}$)")
       ax1.legend(loc=0, frameon=True)
+      ax1.set_ylim(-25, 8)
       # ax1.set_xlim(-4, 4)
       # ax1.set_ylim(-10, 15)
       # Change the second x axis
@@ -1248,21 +1339,16 @@ fundamental principles and theoretical insights presented here.
       matplotlib.style.use("science")
 
       fig = plt.figure(figsize=(3, 3))
-      plot_Phi_charge(fig)
+      plot_Phi_charge(fig, error=True)
       org.figure(plt.savefig("../img/e-vdw-2.pdf"))
 
-      fig = plt.figure(figsize=(5, 5))
+      fig = plt.figure(figsize=(3, 3))
       plot_fitting(fig)
       org.figure(plt.savefig("../img/e-Phi-fitting.pdf"))
 #+END_SRC
 
 #+RESULTS: plot-change-adhesion
 :RESULTS:
-[[file:../img/e-vdw-2.pdf]]
-2 [-0.58572179 -1.19723886]
-3 [ 0.16466217 -0.58572179 -3.40935442]
-4 [-0.00486493  0.16466217 -0.50399526 -3.40935442]
-[[file:../img/e-Phi-fitting.pdf]]
 :END:
 
 
@@ -1283,11 +1369,11 @@ fundamental principles and theoretical insights presented here.
   c_atom_to_sigma = lambda x: x*2/(2.465e-8**2*scipy.sin(scipy.pi/3))
   z_gr = 1.980
 
-  f_charge_base = "../data/charge_int_{}_large2.xvg"
-  f_charge_water = "../data/charge_int_water-surf.xvg"
+  f_charge_base = "../data/6_11_17_data/charge_int_{}_large2.xvg"
+  f_charge_water = "../data/6_11_17_data/charge_int_water-surf.xvg"
 
-  f_dens_base = "../data/density_int_{}_large2.xvg"
-  f_dens_water = "../data/density_int_water-surf.xvg"
+  f_dens_base = "../data/6_11_17_data/density_int_{}_large2.xvg"
+  f_dens_water = "../data/6_11_17_data/density_int_water-surf.xvg"
 
   charge_per_atom.sort()
 
@@ -1302,9 +1388,18 @@ fundamental principles and theoretical insights presented here.
           for index, c in enumerate(charge_per_atom):
               d_sys = numpy.genfromtxt(f_dens_base.format(name[index]),
                                        delimiter=(12, 17), skip_header=19)
-              zz = numpy.linspace(d_sys[:, 0].min(), d_sys[:, 0].max(), 50000)
-              f_y = interp1d(d_sys[:, 0], d_sys[:, 1], kind="cubic")
-              yy = f_y(zz)
+              # special treatment for negative value using spline
+              d_sys_x = d_sys[:, 0]; d_sys_y = d_sys[:, 1]
+              cond = numpy.where(d_sys_y > 100)
+              d_sys_x = d_sys_x[cond]; d_sys_y = d_sys_y[cond]
+              zz = numpy.linspace(d_sys_x.min(), d_sys_x.max(), 50000)
+              f_yy = interp1d(d_sys_x, d_sys_y, kind="cubic")
+              yy = f_yy(zz)
+              zzz = numpy.linspace(0, d_sys_x.min(), 50000)
+              f_yyy = lambda x: d_sys_y[0]*scipy.exp(150*(x-d_sys_x.min()))
+              yyy = f_yyy(zzz)
+              zz = numpy.hstack((zzz, zz))
+              yy = numpy.hstack((yyy, yy))
               # ax.plot(d_sys[:, 0] - z_gr,
                       # d_sys[:, 1], label=r"%d$\times10^{-3}$ $e$/atom" % (c))
               ax.plot(zz - z_gr,
@@ -1349,6 +1444,10 @@ fundamental principles and theoretical insights presented here.
 
 #+END_SRC
 
+#+RESULTS: plot-density
+:RESULTS:
+:END:
+
 
 #+NAME: plot-fig-adhesion-density
 #+BEGIN_SRC python :exports results
@@ -1377,39 +1476,41 @@ fundamental principles and theoretical insights presented here.
   fig2.set_plot_func(plot_den, what="mass")
   fig3.set_plot_func(plot_den, what="charge")
 
-  org.figure(fc.save_all("../img/fig-pot-dens.pdf", outline=False),
+  org.figure("../img/fig-pot-dens.pdf",
              label="fig:MD-res",
              caption=("Geometry of the periodic MD simulation box for "
                       "(a) water molecules only and "
-                      "(b) water-graphene systems."
+                      "(b) water-graphene systems. "
                       "(c) Change of total adhesion energy "
                       r"$\Delta\Phi$, and its partial contributions"
-                      "from Lennard-Jones interaction "
+                      "from Lennard-Jones  "
                       r"$\Delta\Phi_{\mathrm{LJ}}$ "
-                      "and Coulombic interaction "
-                      r"$\Delta\Phi_{\mathrm{CL}}$, "
+                      "and Coulombic  "
+                      r"$\Delta\Phi_{\mathrm{Coul}}$ interactions, "
                       "as a function of "
-                      r"$\sigma_{\mathrm{2D}}$."
-                      r"10^{-3} $e$/atom corresponds to "
-                      "$ a charge density of "
-                      "3.80 \times 10^{12}\ e \cdot \mathrm{cm}^{-2}$. "
-                      "(d) Local density "
+                      r"$\sigma_{\mathrm{2D}}$. "
+		      "The filled regions indicate the error margin of calculation. "
+                      r"$10^{-3}$ \textit{e}/atom corresponds to "
+                      "a charge density of "
+                      r"\(3.80 \times 10^{12}\ e \cdot \mathrm{cm}^{-2}\). "
+                      "(d) and (e) are the local density "
                       r"$\rho_{\mathrm{L}}$ "
-                      "(e) local charge density "
+                      "and local charge density "
                       r"$\delta_{\mathrm{L}}$ "
                       "of water molecules "
-                      "as a function of distance $z$ from graphene surface."),
+                      "as a function of distance $z$ from graphene surface, respectively."),
              attributes=[("latex", ":width 0.9\linewidth")],)
 
 #+END_SRC
 
 #+RESULTS: plot-fig-adhesion-density
 :RESULTS:
-#+CAPTION: Geometry of the periodic MD simulation box for (a) water molecules only and (b) water-graphene systems.(c) Change of total adhesion energy $\Delta\Phi$, and its partial contributionsfrom Lennard-Jones interaction $\Delta\Phi_{\mathrm{LJ}}$ and Coulombic interaction $\Delta\Phi_{\mathrm{CL}}$, as a function of $\sigma_{\mathrm{2D}}$. The charge density of 0.001 \textit{e}/atom is equivalent to $3.80 \times 10^{12}\ e \cdot \mathrm{cm}^{-2}$. (d) Local density $\rho_{\mathrm{L}}$ (e) local charge density $\delta_{\mathrm{L}}$ of water molecules as a function of distance $z$ from graphene surface.
+#+CAPTION: Geometry of the periodic MD simulation box for (a) water molecules only and (b) water-graphene systems. (c) Change of total adhesion energy $\Delta\Phi$, and its partial contributionsfrom Lennard-Jones  $\Delta\Phi_{\mathrm{LJ}}$ and Coulombic  $\Delta\Phi_{\mathrm{Coul}}$ interactions, as a function of $\sigma_{\mathrm{2D}}$. The filled regions indicate the error margin of calculation. $10^{-3}$ \textit{e}/atom corresponds to a charge density of \(3.80 \times 10^{12}\ e \cdot \mathrm{cm}^{-2}\). (d) and (e) are the local density $\rho_{\mathrm{L}}$ and local charge density $\delta_{\mathrm{L}}$ of water molecules as a function of distance $z$ from graphene surface, respectively.
 #+LABEL: fig:MD-res
 #+ATTR_latex: :width 0.9\linewidth
 [[file:../img/fig-pot-dens.pdf]]
 :END:
+
 
 ** Figure EDL                                                       :ignore:
 
@@ -1422,32 +1523,48 @@ fundamental principles and theoretical insights presented here.
   import scipy.constants as const
   import pycse.orgmode as org
 
-  eps_w = 80*const.epsilon_0
-  d_H = 0.3*10**-9                # Helmholtz plane
+  eps_w = 80 * const.epsilon_0
+  d_H = 0.3 * 10**-9                # Helmholtz plane
   n_L = numpy.linspace(-4, 4, 100)
-  sigma_L = n_L*const.e*10**13*10**4
+  sigma_L = n_L * const.e * 10**13 * 10**4
   T = 298
-  C_H = eps_w/d_H
+  C_H = eps_w / d_H
   gamma_w = 72.8e-3               # surface tension in SI
-  f_MD = scipy.poly1d([0.1647, -0.5857, -3.4094, 0])/1000 #In mJ/m^2!!
+  f_MD = scipy.poly1d([0.2157, -0.691, -3.71973, 0])/1000 #In mJ/m^2!!
+
+
+  # def f_MD(x):
+  #     f_n = lambda x_: -0.074 * (x_)**3 - 1.842 * \
+  #         (x_)**2 - 2.249 * x_ + 2.48 * (-x_)**0.54
+  #     f_p = lambda x_: - 1.279 * x_ + 1.525 * (x_)**0.99 + 11.950 * \
+  #         (scipy.exp(-1.043 * x_) - 1) 
+  #     xn = x[x < 0]
+  #     xp = x[x >= 0]
+  #     # print(xn, xp)
+  #     yn = f_n(xn)/1000
+  #     yp = f_p(xp)/1000
+
+  #     return numpy.hstack([yn, yp])
 
 
   def cal_2D(c0, sigma_, what="Delta_cos", z=1, add_MD=False):
       # c0 should use mol/m^3
       sigma = -sigma_
-      psi_L = -2*const.k*T/z/const.e*scipy.arcsinh(
-              sigma/scipy.sqrt(8*c0*const.N_A*eps_w*const.k*T))
-      psi_2D = psi_L - sigma/C_H
-      A = scipy.sqrt(2*z**2*const.e**2*eps_w*c0*const.N_A/const.k/T)
-      B = z*const.e*psi_L/(2*const.k*T)
-      C_L = A*scipy.cosh(B)
-      l_D = scipy.sqrt(eps_w*const.k*T/(2*z**2*const.e**2*c0*const.N_A))
-      Delta_Phi_el = -sigma**2/(2*C_H) - sigma**2/(C_L+eps_w/l_D)
+      psi_L = -2 * const.k * T / z / const.e * scipy.arcsinh(
+          sigma / scipy.sqrt(8 * c0 * const.N_A * eps_w * const.k * T))
+      psi_2D = psi_L - sigma / C_H
+      A = scipy.sqrt(2 * z**2 * const.e**2 * eps_w *
+                     c0 * const.N_A / const.k / T)
+      B = z * const.e * psi_L / (2 * const.k * T)
+      C_L = A * scipy.cosh(B)
+      l_D = scipy.sqrt(eps_w * const.k * T /
+                       (2 * z**2 * const.e**2 * c0 * const.N_A))
+      Delta_Phi_el = -sigma**2 / (2 * C_H) - sigma**2 / (C_L + eps_w / l_D)
       if add_MD is True:
-          n = sigma_/(const.e*10**13*10**4)
+          n = sigma_ / (const.e * 10**13 * 10**4)
           Delta_Phi_MD = f_MD(n)
           Delta_Phi_el += Delta_Phi_MD
-      Delta_cos = -Delta_Phi_el/gamma_w
+      Delta_cos = -Delta_Phi_el / gamma_w
 
       # Classical value
       # C = scipy.sqrt(32*const.k**3*T**3*eps_w*c0*const.N_A/z**2/const.e**2)
@@ -1464,12 +1581,13 @@ fundamental principles and theoretical insights presented here.
       elif what is "Delta_cos":
           return Delta_cos
 
+
   def plot_ph_dep(fig, MD=False):
       # Plot the Delta theta as function of sigma
       ax = fig.add_subplot(111)
       for ph in numpy.arange(0, -8, -1):
-          pH = 10**ph
-          pH_SI = pH*1000
+          pH = 10**numpy.int(ph)  # why raise error??
+          pH_SI = pH * 1000
           res = cal_2D(pH_SI, sigma_L, what="Delta_cos", add_MD=MD)
           # res = scipy.arccos(res)/scipy.pi*180
           ax.plot(n_L, res)
@@ -1517,17 +1635,19 @@ fundamental principles and theoretical insights presented here.
                           edgecolor=None,))
       fig.tight_layout(pad=0)
 
+
   def plot_theta_2D(fig):
       ax = fig.add_subplot(111)
       theta_0 = numpy.linspace(40, 100, 100)
       ss, tt = numpy.meshgrid(sigma_L, theta_0)
       nn, tt_ = numpy.meshgrid(n_L, theta_0)
-      c0 = 10**3*10**-7           # The concentration
-      dd = scipy.arccos(scipy.cos(tt/180*scipy.pi)+cal_2D(c0, ss))/scipy.pi*180-tt
+      c0 = 10**3 * 10**-7           # The concentration
+      dd = scipy.arccos(scipy.cos(tt / 180 * scipy.pi) +
+			cal_2D(c0, ss)) / scipy.pi * 180 - tt
       pmesh = ax.pcolormesh(nn, tt, dd,
-                          linewidth=0, rasterized=True,
-                          cmap="viridis_r",
-                          vmax=0)
+                            linewidth=0, rasterized=True,
+                            cmap="viridis_r",
+                            vmax=0)
       ax.set_xlabel(r"$\sigma_{\mathrm{2D}}$ (10$^{13} e\cdot$cm$^{-2}$)")
       ax.set_ylabel(r"$\theta*$ ($^{\circ}$)")
       cbar = fig.colorbar(pmesh, shrink=0.8)
@@ -1552,8 +1672,8 @@ fundamental principles and theoretical insights presented here.
       fig3, num2 = fc.add_figure(loc=(0, 6, 1, 3), label=True)
       fig3.set_plot_func(plot_ph_dep, MD=True)
       org.figure(fc.save_all("../img/2d-ph-dependency+MD.pdf", outline=False),
-                 label="fig:res-EDL",
-                 caption=("(a) Scheme of the interface between the 2D material "
+		 label="fig:res-EDL",
+		 caption=("(a) Scheme of the interface between the 2D material "
                           "and the aqueous phase. "
                           r"(b) $(\Delta\cos\theta)^{\mathrm{EDL}}$ "
                           "as a function of "
@@ -1563,8 +1683,7 @@ fundamental principles and theoretical insights presented here.
                           r"(c) Overall change of contact angle $(\Delta \cos \theta)^{\mathrm{Orien+EDL}}$ "
                           "combining the orientation and EDL effects, "
                           "with varied solute concentrations as in (b)."),
-                 attributes=[("latex", ":width 0.5\linewidth")])
-
+		 attributes=[("latex", ":width 0.5\linewidth")])
 #+END_SRC
 
 #+RESULTS:
@@ -1759,9 +1878,9 @@ fundamental principles and theoretical insights presented here.
   if __name__ == "__main__":
       plot_fitting_f(fig)
       org.figure(plt.savefig("../img/plot-fitting.pdf"),
-                 attributes=[("latex", ":width 0.95\linewidth")],
-                 label="fig:f-nc-exp",
-                 caption=("Theoretical and fitted experimental data of "
+		 attributes=[("latex", ":width 0.95\linewidth")],
+		 label="fig:f-nc-exp",
+		 caption=("Theoretical and fitted experimental data of "
                           r"$\Delta\cos\theta$ "
                           "as a function of "
                           r"$\sigma_{\mathrm{2D}}$. "
@@ -1778,6 +1897,10 @@ fundamental principles and theoretical insights presented here.
 
 
 #+END_SRC
+
+#+RESULTS: cal-charge-density
+:RESULTS:
+:END:
 
 #+NAME: assemble-fitting
 #+BEGIN_SRC python :exports results 
