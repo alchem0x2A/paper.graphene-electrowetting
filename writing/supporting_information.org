@@ -454,7 +454,8 @@ layers are important.
 #+CAPTION: Simple model for the asymmetric behavior of $\Delta \Phi_{\mathrm{Coul}}$ as a function of $\sigma_{\mathrm{2D}}$. (a) Proposed orientation of first layer water molecules on n- and p-doped graphene surface. (b) Comparison between the $\Delta \Phi_{\mathrm{Coul}}$ values calculated by MD simulation and the proposed model. The results obtained by the simple capacitance model shows similar shift of $\Delta \Phi_{\mathrm{2D}}$ maximum.
 [[file:../img/SI_model.pdf]]
 
-\newpage{}
+
+\clearpage{}
 
 ** Fitting of the $\Delta \Phi$ - $\sigma_{\mathrm{2D}}$ Data in MD Simulations
 
