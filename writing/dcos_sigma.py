@@ -13,7 +13,7 @@ sigma_L = n_L*const.e*10**13*10**4
 T = 298
 C_H = eps_w/d_H
 gamma_w = 72.8e-3               # surface tension in SI
-f_MD = scipy.poly1d([0.1647, -0.5857, -3.4094, 0])/1000 #In mJ/m^2!!
+f_MD = scipy.poly1d([0.2157, -0.691, -3.71973, 0])/1000 #In mJ/m^2!!
 
 
 def cal_2D(c0, sigma_, what="Delta_cos", z=1, add_MD=False):
@@ -52,7 +52,7 @@ def plot_ph_dep(fig, MD=False):
     # Plot the Delta theta as function of sigma
     ax = fig.add_subplot(111)
     for ph in numpy.arange(0, -8, -1):
-        pH = 10**ph
+        pH = 10**numpy.int(ph)  # why raise error??
         pH_SI = pH*1000
         res = cal_2D(pH_SI, sigma_L, what="Delta_cos", add_MD=MD)
         # res = scipy.arccos(res)/scipy.pi*180
@@ -136,8 +136,8 @@ if __name__ == "__main__":
     fig3, num2 = fc.add_figure(loc=(0, 6, 1, 3), label=True)
     fig3.set_plot_func(plot_ph_dep, MD=True)
     org.figure(fc.save_all("../img/2d-ph-dependency+MD.pdf", outline=False),
-               label="fig:res-EDL",
-               caption=("(a) Scheme of the interface between the 2D material "
+	       label="fig:res-EDL",
+	       caption=("(a) Scheme of the interface between the 2D material "
                         "and the aqueous phase. "
                         r"(b) $(\Delta\cos\theta)^{\mathrm{EDL}}$ "
                         "as a function of "
@@ -147,4 +147,4 @@ if __name__ == "__main__":
                         r"(c) Overall change of contact angle $(\Delta \cos \theta)^{\mathrm{Orien+EDL}}$ "
                         "combining the orientation and EDL effects, "
                         "with varied solute concentrations as in (b)."),
-               attributes=[("latex", ":width 0.5\linewidth")])
+	       attributes=[("latex", ":width 0.5\linewidth")])

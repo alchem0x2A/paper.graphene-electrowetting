@@ -13,11 +13,11 @@ label_name = ["-0.012", "-0.006", "0", "0.006", "0.012"]
 c_atom_to_sigma = lambda x: x*2/(2.465e-8**2*scipy.sin(scipy.pi/3))
 z_gr = 1.980
 
-f_charge_base = "../data/charge_int_{}_large2.xvg"
-f_charge_water = "../data/charge_int_water-surf.xvg"
+f_charge_base = "../data/6_11_17_data/charge_int_{}_large2.xvg"
+f_charge_water = "../data/6_11_17_data/charge_int_water-surf.xvg"
 
-f_dens_base = "../data/density_int_{}_large2.xvg"
-f_dens_water = "../data/density_int_water-surf.xvg"
+f_dens_base = "../data/6_11_17_data/density_int_{}_large2.xvg"
+f_dens_water = "../data/6_11_17_data/density_int_water-surf.xvg"
 
 charge_per_atom.sort()
 
@@ -32,9 +32,18 @@ def plot_den(fig, what="mass"):
         for index, c in enumerate(charge_per_atom):
             d_sys = numpy.genfromtxt(f_dens_base.format(name[index]),
                                      delimiter=(12, 17), skip_header=19)
-            zz = numpy.linspace(d_sys[:, 0].min(), d_sys[:, 0].max(), 50000)
-            f_y = interp1d(d_sys[:, 0], d_sys[:, 1], kind="cubic")
-            yy = f_y(zz)
+            # special treatment for negative value using spline
+            d_sys_x = d_sys[:, 0]; d_sys_y = d_sys[:, 1]
+            cond = numpy.where(d_sys_y > 100)
+            d_sys_x = d_sys_x[cond]; d_sys_y = d_sys_y[cond]
+            zz = numpy.linspace(d_sys_x.min(), d_sys_x.max(), 50000)
+            f_yy = interp1d(d_sys_x, d_sys_y, kind="cubic")
+            yy = f_yy(zz)
+            zzz = numpy.linspace(0, d_sys_x.min(), 50000)
+            f_yyy = lambda x: d_sys_y[0]*scipy.exp(150*(x-d_sys_x.min()))
+            yyy = f_yyy(zzz)
+            zz = numpy.hstack((zzz, zz))
+            yy = numpy.hstack((yyy, yy))
             # ax.plot(d_sys[:, 0] - z_gr,
                     # d_sys[:, 1], label=r"%d$\times10^{-3}$ $e$/atom" % (c))
             ax.plot(zz - z_gr,

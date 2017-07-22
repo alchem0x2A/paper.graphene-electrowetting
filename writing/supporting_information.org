@@ -385,7 +385,7 @@ As can be seen in Figure 3(c) in the main text, the maximum of $\Delta
 \Phi_{\mathrm{Coul}}$ as function of $\sigma_{\mathrm{2D}}$ shifts
 from charge neutral state (\(\sigma_{\mathrm{2D}} = 0\)) to slightly
 n-doped region. This behavior can be explained by the contribution
-from the interfacial charge density to the Coulombic interactions.
+from the interfacial charge density to the Coulombic interactions (Figure [[ref:fig-SI-mode]](a)).
 Assuming that the interfacial charge density per unit area of the
 water layer $\sigma_{\mathrm{L}}$ is approximated by
 $\sigma_{\mathrm{L}}=\delta_{\mathrm{L}} \cdot t_{1}$, where $t_{1}$
@@ -405,18 +405,18 @@ assume that the interfacial dielectric constant
 $\epsilon_{\mathrm{int}} = 20 \epsilon_{0}$
 cite:conway_dielectric_1951, and take the value of $d_{1}$ from the
 value of the most probable charge distribution distance $z_{1}$ from
-Figure S4(c). The comparison between the $\Delta \Phi_{\mathrm{Coul}}$
-from MD results and the proposed model can be seen in Figure
-[[ref:fig-SI-mode]](b). The degree of Coulombic interactions from the
-model is close to that of the MD results, indicating that the decrease
-of interaction potential of the graphene-water system is mainly
-determined by the interfacial charge distribution. The result
-predicted by the model also shows a shifted maximum of $\Delta
-\Phi_{\mathrm{Coul}}$, well corresponding with the MD results. Such
-asymmetric behavior is further ascribed to the decrease of
-$\delta_{\mathrm{L}}$ when graphene is slightly n-doped (see Figure
-[[ref:fig-SI-1st]](d)), as a combined result of the Coulombic interaction
-and hydrogen bonding. Note that in the p-doped regime, the
+Figure [[ref:fig-SI-1st]](c). The comparison between the $\Delta
+\Phi_{\mathrm{Coul}}$ from MD results and the proposed model can be
+seen in Figure [[ref:fig-SI-mode]](b). The degree of Coulombic
+interactions from the model is close to that of the MD results,
+indicating that the decrease of interaction potential of the
+graphene-water system is mainly determined by the interfacial charge
+distribution. The result predicted by the model also shows a shifted
+maximum of $\Delta \Phi_{\mathrm{Coul}}$, well corresponding with the
+MD results. Such asymmetric behavior is further ascribed to the
+decrease of $\delta_{\mathrm{L}}$ when graphene is slightly n-doped
+(see Figure [[ref:fig-SI-1st]](d)), as a combined result of the Coulombic
+interaction and hydrogen bonding. Note that in the p-doped regime, the
 model-predicted $\Delta \Phi_{\mathrm{Coul}}$ value differs from the
 MD results, suggesting that the contribution from the subsequent
 layers are important.

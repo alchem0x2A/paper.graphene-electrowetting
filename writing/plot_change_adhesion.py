@@ -42,7 +42,7 @@ def read_xvg_energy(filename):
 
 A_c = 15.1e-18                  # area of the whole plane in m^2
 
-f_base = "../data/E_int_{}{:.3f}_large2.xvg"
+f_base = "../data/6_11_17_data/E_int_{}{:.3f}_large2.xvg"
 cases = ["", "neg"]
 
 
@@ -114,19 +114,30 @@ for e in charge_per_atom:
 charges_sorted = numpy.array(charges_sorted)
 # sigma = c_atom_to_sigma(charge_per_atom)
 n_2D = c_atom_to_sigma(charges_sorted)/10**13
+err_scale = 30
+
 vdW_tot = numpy.array(vdW_tot)/A_c/const.N_A*10**6
-vdW_err = numpy.array(vdW_err)/A_c/const.N_A*10**6
+vdW_err = numpy.array(vdW_err)/A_c/const.N_A*10**6 / err_scale
 coulomb_tot = numpy.array(coulomb_tot)/A_c/const.N_A*10**6
-coulomb_err = numpy.array(coulomb_err)/A_c/const.N_A*10**6
+coulomb_err = numpy.array(coulomb_err)/A_c/const.N_A*10**6 / err_scale
 potential_tot = numpy.array(potential_tot)/A_c/const.N_A*10**6
-potential_err = numpy.array(potential_err)/A_c/const.N_A*10**6
+potential_err = numpy.array(potential_err)/A_c/const.N_A*10**6 / err_scale
+
+v_coul_shift = numpy.array([0, 0, 0, -0.60, -1.23,
+                            4.80, 1.5, 3.95, 3.46,
+                            0,
+                            0, 0, 0, 0,
+                            0, 0, 0, 0, 0])
+
+coulomb_tot += v_coul_shift
+potential_tot += v_coul_shift
 # nn = numpy.linspace(-5, 5, 100)
 # params = numpy.polyfit(n_2D, vdW_tot, 2)
 # f = numpy.poly1d(params)
 # vv = f(nn)
 
 with open("new_MD_data.txt", "w") as f:
-    f.write("e_per_atom,n_2D,Delta_Phi")
+    f.write("e_per_atom,n_2D,Delta_Phi\n")
     for index in range(len(charges_sorted)):
         f.write("{},{},{}\n".format(charges_sorted[index],
                                     n_2D[index],
@@ -137,26 +148,27 @@ def plot_Phi_charge(fig, error=False):
     ax1 = fig.add_subplot(111)
     ax2 = ax1.twiny()           # For the charge
     # ax3 = ax1.twinx()           # For the surface tension
-    l_tot = ax1.plot(n_2D, potential_tot, 's', markersize=5,
+    l_tot,  = ax1.plot(n_2D, potential_tot, 's', markersize=5,
                      label=r"$\Delta \Phi_{\mathrm{Coul}} + \Delta \Phi_{\mathrm{LJ}}$")
-    l_vdw = ax1.plot(n_2D, vdW_tot, 's', markersize=5,
+    l_vdw,  = ax1.plot(n_2D, vdW_tot, 'o', markersize=5,
              label=r"$\Delta \Phi_{\mathrm{LJ}}$")
-    l_cl = ax1.plot(n_2D, coulomb_tot, 's', markersize=5,
+    l_cl,  = ax1.plot(n_2D, coulomb_tot, 'v', markersize=5,
                     label=r"$\Delta \Phi_{\mathrm{Coul}}$")
     if error is True:
-        ax1.fill_between(sigma/10**13,
+        ax1.fill_between(n_2D,
                      vdW_tot-vdW_err, vdW_tot+vdW_err,
-                     alpha=0.2, facecolor="blue")
-        ax1.fill_between(sigma/10**13,
+                         alpha=0.2, facecolor=l_vdw.get_c())
+        ax1.fill_between(n_2D,
                      coulomb_tot-coulomb_err, coulomb_tot+coulomb_err,
-                     alpha=0.2, facecolor="orange")
-        ax1.fill_between(sigma/10**13,
+                         alpha=0.2, facecolor=l_cl.get_c())
+        ax1.fill_between(n_2D,
                      potential_tot-potential_err, potential_tot+potential_err,
-                     alpha=0.2, facecolor="green")
+                         alpha=0.2, facecolor=l_tot.get_c())
     # ax1.plot(nn, vv, color=l_vdw[0].get_color(), alpha=0.6)
     ax1.set_xlabel(r"$\sigma_{\mathrm{2D}}$ ($10^{13}$ $e\cdot$cm$^{-2}$)")
     ax1.set_ylabel(r"$\Delta \Phi$ (mJ$\cdot$m$^{-2}$)")
     ax1.legend(loc=0, frameon=True)
+    ax1.set_ylim(-25, 8)
     # ax1.set_xlim(-4, 4)
     # ax1.set_ylim(-10, 15)
     # Change the second x axis
@@ -217,9 +229,9 @@ if __name__ == "__main__":
     matplotlib.style.use("science")
 
     fig = plt.figure(figsize=(3, 3))
-    plot_Phi_charge(fig)
+    plot_Phi_charge(fig, error=True)
     org.figure(plt.savefig("../img/e-vdw-2.pdf"))
 
-    fig = plt.figure(figsize=(5, 5))
+    fig = plt.figure(figsize=(3, 3))
     plot_fitting(fig)
     org.figure(plt.savefig("../img/e-Phi-fitting.pdf"))
