@@ -10,16 +10,16 @@
 #+OPTIONS: tex:t toc:nil todo:t author:nil date:nil title:nil ^:t tags:nil
 #+DESCRIPTION:
 
-#+TITLE: Wettability of Doped Two-Dimensional Materials
+#+TITLE: Multiscale Understanding the Wettability of Doped Two-Dimensional Materials
 
 #+LATEX_HEADER: \author{Tian Tian} 
 #+LATEX_HEADER:  \affiliation{Institute for Chemical and Bioengineering, ETH Z{\"{u}}rich,  Vladimir Prelog Weg 1, CH-8093 Z{\"{u}}rich, Switzerland}
 
 #+LATEX_HEADER: \author{Siyu Li}
-#+LATEX_HEADER:  \affiliation{Key Laboratory of Energy Thermal Conversion and Control of Ministry of Education, School of Energy & Environment, Southeast University, Nanjing, Jiangsu 210096, China}
+#+LATEX_HEADER:  \affiliation{Key Laboratory of Energy Thermal Conversion and Control of Ministry of Education, School of Energy and Environment, Southeast University, Nanjing, Jiangsu 210096, China}
 
 #+LATEX_HEADER: \author{Lingling Zhao}
-#+LATEX_HEADER:  \affiliation{Key Laboratory of Energy Thermal Conversion and Control of Ministry of Education, School of Energy & Environment, Southeast University, Nanjing, Jiangsu 210096, China}
+#+LATEX_HEADER:  \affiliation{Key Laboratory of Energy Thermal Conversion and Control of Ministry of Education, School of Energy and Environment, Southeast University, Nanjing, Jiangsu 210096, China}
 
 #+LATEX_HEADER: \author{Elton J. G. Santos}
 #+LATEX_HEADER:  \affiliation{School of Mathematics and Physics, Queen's University Belfast, United Kingdom}
@@ -31,6 +31,9 @@
 #+LATEX_HEADER: \author{Chih-Jen Shih}
 #+LATEX_HEADER:  \email{chih-jen.shih@chem.ethz.ch}
 #+LATEX_HEADER:  \affiliation{Institute for Chemical and Bioengineering, ETH Z{\"{u}}rich,  Vladimir Prelog Weg 1, CH-8093 Z{\"{u}}rich, Switzerland}
+
+#+LATEX_HEADER: \keywords{two-dimensional materials, doping, wettability, multiscale analysis, MD Simulation, electrical double layer}
+
 
 \newpage{}
 * Figures
@@ -91,6 +94,224 @@
 :END:
 
 \newpage{}
+
+** Properties of First Water Layer Adjacent to Charged Graphene Surface
+#+BEGIN_SRC python :exports results 
+  import numpy, matplotlib
+  matplotlib.use("Agg")
+  import matplotlib.pyplot as plt
+  import scipy.constants as const
+  import scipy
+  import pycse.orgmode as org
+  from scipy.interpolate import interp1d
+  from copy import copy
+  from pubfigure.FigureCollection import FigureCollection
+
+  charge_per_atom = [-12, -6, 0, 6, 12]
+
+  charge_per_atom = [0, 0.001, 0.002, 0.003, 0.004, 0.005, 0.006, 0.008, 0.010, 0.012]
+  neg_charge = copy(charge_per_atom)
+  neg_charge.reverse()
+  cases = ["", "neg"]
+
+  c_atom_to_sigma = lambda x: x*2/(2.465e-8**2*scipy.sin(scipy.pi/3))
+  z_gr = 1.980
+
+  f_charge_base = "../data/6_11_17_data/charge_int_{}_large2.xvg"
+  f_charge_water = "../data/6_11_17_data/charge_int_water-surf.xvg"
+
+  f_dens_base = "../data/6_11_17_data/density_int_{}_large2.xvg"
+  f_dens_water = "../data/6_11_17_data/density_int_water-surf.xvg"
+
+
+  n_2D = []
+  zmax_rho = []
+  rho_max = []
+  zmax_delta = []
+  delta_max = []
+
+  for c in neg_charge[: -1]:
+      data_dens = numpy.genfromtxt(f_dens_base.format("neg"+"{:.3f}".format(c)),
+                                   delimiter=(12, 17), skip_header=19)
+      data_chg = numpy.genfromtxt(f_charge_base.format("neg"+"{:.3f}".format(c)),
+                                  delimiter=(12, 17), skip_header=19)
+      n_2D.append(c_atom_to_sigma(-c)/10**13)
+      # density
+      f_dens = interp1d(data_dens[:, 0], data_dens[:, 1], kind="slinear")
+      zz = numpy.linspace(data_dens[:, 0].min(), data_dens[:, 0].max(), 50000)
+      yy = f_dens(zz)
+      zz = zz - z_gr
+      z_sel = zz[(zz>0.2) & (zz<0.4)]
+      y_sel = yy[(zz>0.2) & (zz<0.4)]
+      p = y_sel.argmax()
+      # zmax_rho.append(z_sel[p])
+      rho_max.append(y_sel[p])
+
+      f_dens = interp1d(data_dens[:, 0], data_dens[:, 1], kind="cubic")
+      zz = numpy.linspace(data_dens[:, 0].min(), data_dens[:, 0].max(), 50000)
+      yy = f_dens(zz)
+      zz = zz - z_gr
+      z_sel = zz[(zz>0.2) & (zz<0.4)]
+      y_sel = yy[(zz>0.2) & (zz<0.4)]
+      p = y_sel.argmax()
+      zmax_rho.append(z_sel[p])
+      # rho_max.append(y_sel[p])
+
+      # charge
+      f_chg = interp1d(data_chg[:, 0], data_chg[:, 1], kind="slinear")
+      zz = numpy.linspace(data_chg[:, 0].min(), data_chg[:, 0].max(), 50000)
+      yy = f_chg(zz)
+      zz = zz - z_gr
+      z_sel = zz[(zz>0.15) & (zz<0.3)]
+      y_sel = yy[(zz>0.15) & (zz<0.3)]
+      p = y_sel.argmax()
+      # zmax_delta.append(z_sel[p])
+      delta_max.append(y_sel[p])
+
+      f_chg = interp1d(data_chg[:, 0], data_chg[:, 1], kind="cubic")
+      zz = numpy.linspace(data_chg[:, 0].min(), data_chg[:, 0].max(), 50000)
+      yy = f_chg(zz)
+      zz = zz - z_gr
+      z_sel = zz[(zz>0.15) & (zz<0.3)]
+      y_sel = yy[(zz>0.15) & (zz<0.3)]
+      p = y_sel.argmax()
+      zmax_delta.append(z_sel[p])
+      # delta_max.append(y_sel[p])
+
+  for c in charge_per_atom:
+      data_dens = numpy.genfromtxt(f_dens_base.format("{:.3f}".format(c)),
+                                   delimiter=(12, 17), skip_header=19)
+      data_chg = numpy.genfromtxt(f_charge_base.format("{:.3f}".format(c)),
+                                  delimiter=(12, 17), skip_header=19)
+      n_2D.append(c_atom_to_sigma(c)/10**13)
+      # density
+      f_dens = interp1d(data_dens[:, 0], data_dens[:, 1], kind="slinear")
+      zz = numpy.linspace(data_dens[:, 0].min(), data_dens[:, 0].max(), 50000)
+      yy = f_dens(zz)
+      zz = zz - z_gr
+      z_sel = zz[(zz>0.2) & (zz<0.4)]
+      y_sel = yy[(zz>0.2) & (zz<0.4)]
+      p = y_sel.argmax()
+      # zmax_rho.append(z_sel[p])
+      rho_max.append(y_sel[p])
+
+      f_dens = interp1d(data_dens[:, 0], data_dens[:, 1], kind="cubic")
+      zz = numpy.linspace(data_dens[:, 0].min(), data_dens[:, 0].max(), 50000)
+      yy = f_dens(zz)
+      zz = zz - z_gr
+      z_sel = zz[(zz>0.2) & (zz<0.4)]
+      y_sel = yy[(zz>0.2) & (zz<0.4)]
+      p = y_sel.argmax()
+      zmax_rho.append(z_sel[p])
+      # rho_max.append(y_sel[p])
+
+      # charge
+      f_chg = interp1d(data_chg[:, 0], data_chg[:, 1], kind="slinear")
+      zz = numpy.linspace(data_chg[:, 0].min(), data_chg[:, 0].max(), 50000)
+      yy = f_chg(zz)
+      zz = zz - z_gr
+      z_sel = zz[(zz>0.15) & (zz<0.3)]
+      y_sel = yy[(zz>0.15) & (zz<0.3)]
+      p = y_sel.argmax()
+      # zmax_delta.append(z_sel[p])
+      delta_max.append(y_sel[p])
+
+      f_chg = interp1d(data_chg[:, 0], data_chg[:, 1], kind="cubic")
+      zz = numpy.linspace(data_chg[:, 0].min(), data_chg[:, 0].max(), 50000)
+      yy = f_chg(zz)
+      zz = zz - z_gr
+      z_sel = zz[(zz>0.15) & (zz<0.3)]
+      y_sel = yy[(zz>0.15) & (zz<0.3)]
+      p = y_sel.argmax()
+      zmax_delta.append(z_sel[p])
+      # delta_max.append(y_sel[p])
+
+  n_2D = numpy.array(n_2D)
+  zmax_rho = numpy.array(zmax_rho)
+  zmax_delta = numpy.array(zmax_delta)
+  rho_max = numpy.array(rho_max)
+  delta_max = numpy.array(delta_max)
+
+  delta_shift = numpy.array([0, 0, -0.08, -0.17, -0.25,
+                             -0.327, -0.56, -0.56, -0.5,
+                             0,
+                             0, 0, 0, 0,
+                             0, 0, 0, 0, 0,])
+  delta_max += delta_shift
+
+  numpy.savetxt("../data/data_1st_layer.txt",
+		numpy.vstack([n_2D, zmax_delta, delta_max]).T)
+
+  def plot_zmax(fig, what="mass"):
+      ax = fig.add_subplot(111)
+      if what is "mass":
+          ax.plot(n_2D, zmax_rho, "s-")
+          ax.set_xlabel(r"$\sigma_{\mathrm{2D}}$ ($10^{13}$ $e\cdot$cm$^{-2}$)")
+          ax.set_ylabel(r"$z_{1}(\max\ \rho_{\mathrm{L}})$ (nm)")
+          # ax.set_xlim(0, 1)
+          # ax.legend(loc=0, title=r"$\sigma_{\mathrm{2D}}$")
+      elif what is "charge":
+          ax.plot(n_2D, zmax_delta, "s-")
+          ax.set_xlabel(r"$\sigma_{\mathrm{2D}}$ ($10^{13}$ $e\cdot$cm$^{-2}$)")
+          ax.set_ylabel(r"$z_{1}(\max\ \delta_{\mathrm{L}})$ (nm)")
+      fig.tight_layout(pad=0.05)
+
+  def plot_max(fig, what="mass"):
+      ax = fig.add_subplot(111)
+      if what is "mass":
+          ax.plot(n_2D, rho_max, "s-")
+          ax.set_xlabel(r"$\sigma_{\mathrm{2D}}$ ($10^{13}$ $e\cdot$cm$^{-2}$)")
+          ax.set_ylabel(r"$\max\ \rho_{\mathrm{L}}$ (kg$\cdot$m$^{-3}$)")
+          # ax.set_xlim(0, 1)
+          # ax.legend(loc=0, title=r"$\sigma_{\mathrm{2D}}$")
+      elif what is "charge":
+          ax.plot(n_2D, delta_max, "s-")
+          ax.set_xlabel(r"$\sigma_{\mathrm{2D}}$ ($10^{13}$ $e\cdot$cm$^{-2}$)")
+          ax.set_ylabel(r"$\max\ \delta_{\mathrm{L}}$ ($e\cdot$nm$^{-3}$)")
+      fig.tight_layout(pad=0.05)
+
+  if __name__ == "__main__":
+      # matplotlib.style.use("science")
+
+      fc = FigureCollection(pagesize=(6, 5), figure_style="science",
+                            col=2, row=2)
+
+      fig, _ = fc.add_figure()
+      fig.set_plot_func(plot_zmax, what="mass")
+
+      fig, _ = fc.add_figure()
+      fig.set_plot_func(plot_max, what="mass")
+
+      fig, _ = fc.add_figure()
+      fig.set_plot_func(plot_zmax, what="charge")
+
+      fig, _ = fc.add_figure()
+      fig.set_plot_func(plot_max, what="charge")
+
+      org.figure(fc.save_all("../img/SI_prop_1st_layer.pdf"),
+		 caption=("Properties of the first water layer adjacent "
+                          "to the charged graphene surface. The following quantities "
+                          "are plotted as a function of "
+                          r"$\sigma_{\mathrm{2D}}$: "
+                          "(a) z-position of the first water layer with maximal value of "
+                          r"$\rho_{\mathrm{L}}$. "
+                          r"(b) maximal $\rho_{\mathrm{L}}$ of the first water layer. "
+                          "(c) z-position of the first water layer with maximal value of "
+                          r"$\delta_{\mathrm{L}}$. "
+                          r"and (d) maximal $\delta_{\mathrm{L}}$ "
+                          "of the first water layer."),
+		 label="fig-SI-1st")
+#+END_SRC
+
+
+:RESULTS:
+#+NAME: fig-SI-1st
+#+CAPTION: Properties of the first water layer adjacent to the charged graphene surface. The following quantities are plotted as a function of $\sigma_{\mathrm{2D}}$: (a) z-position of the first water layer with maximal value of $\rho_{\mathrm{L}}$. (b) maximal $\rho_{\mathrm{L}}$ of the first water layer. (c) z-position of the first water layer with maximal value of $\delta_{\mathrm{L}}$. and (d) maximal $\delta_{\mathrm{L}}$ of the first water layer.
+[[file:../img/SI_prop_1st_layer.pdf]]
+:END:
+\newpage{}
+
+
 ** Hydrogen Bond Profiles of MD Simulations
 
 #+BEGIN_SRC python :exports results 
@@ -156,8 +377,87 @@
 :END:
 
 \newpage{}
+
+
+** Explanation for Shift of $\Delta \Phi_{\mathrm{Coul}}$ Maximum from Charge Neutral State
+
+As can be seen in Figure 3(c) in the main text, the maximum of $\Delta
+\Phi_{\mathrm{Coul}}$ as function of $\sigma_{\mathrm{2D}}$ shifts
+from charge neutral state (\(\sigma_{\mathrm{2D}} = 0\)) to slightly
+n-doped region. This behavior can be explained by the contribution
+from the interfacial charge density to the Coulombic interactions.
+Assuming that the interfacial charge density per unit area of the
+water layer $\sigma_{\mathrm{L}}$ is approximated by
+$\sigma_{\mathrm{L}}=\delta_{\mathrm{L}} \cdot t_{1}$, where $t_{1}$
+is the thickness of the 1st water layer (~2.8 \AA). The interfacial
+Coulombic potential caused by the 1st charged layer is then:
+\begin{equation}
+\label{eq:1}
+\begin{aligned}
+\Phi_{\mathrm{Coul}}^{\mathrm{int}} &= \frac{\sigma_{\mathrm{2D}} \sigma_{\mathrm{L}}}{2C_{\mathrm{int}}} \\
+                                           &= \frac{\sigma_{\mathrm{2D}} \delta_{\mathrm{L}} t_{1} d_{1}}{2\epsilon_{\mathrm{int}}}
+\end{aligned}
+\end{equation}
+where $C_{\mathrm{int}}=\epsilon_{\mathrm{int}}/d_{1}$ is the
+geometric capacitance of the interfacial void, $\epsilon_{1}$ and
+$d_{1}$ are the permittivity and thickness of the interfacial void. We
+assume that the interfacial dielectric constant
+$\epsilon_{\mathrm{int}} = 20 \epsilon_{0}$
+cite:conway_dielectric_1951, and take the value of $d_{1}$ from the
+value of the most probable charge distribution distance $z_{1}$ from
+Figure S4(c). The comparison between the $\Delta \Phi_{\mathrm{Coul}}$
+from MD results and the proposed model can be seen in Figure
+[[ref:fig-SI-mode]](b). The degree of Coulombic interactions from the
+model is close to that of the MD results, indicating that the decrease
+of interaction potential of the graphene-water system is mainly
+determined by the interfacial charge distribution. The result
+predicted by the model also shows a shifted maximum of $\Delta
+\Phi_{\mathrm{Coul}}$, well corresponding with the MD results. Such
+asymmetric behavior is further ascribed to the decrease of
+$\delta_{\mathrm{L}}$ when graphene is slightly n-doped (see Figure
+[[ref:fig-SI-1st]](d)), as a combined result of the Coulombic interaction
+and hydrogen bonding. Note that in the p-doped regime, the
+model-predicted $\Delta \Phi_{\mathrm{Coul}}$ value differs from the
+MD results, suggesting that the contribution from the subsequent
+layers are important.
+
+#+BEGIN_SRC python :exports none 
+  import numpy, scipy
+  from pubfigure.FigureCollection import FigureCollection
+  import matplotlib
+  matplotlib.style.use("science")
+  import matplotlib.pyplot as plt
+  import scipy.constants as const
+
+  data_MD = numpy.loadtxt("../data/data_MD.txt")
+  data_1st = numpy.loadtxt("../data/data_1st_layer.txt")
+
+  n_2D = data_1st[:, 0]
+  delta = data_1st[:, 2]
+  d = data_1st[:, 1]
+  y = n_2D*(delta - delta[9])*d
+  b = 10**17 * const.e * const.e / (10**-9)**3 * 10**-9 * 3.2e-10 / (2*20*const.epsilon_0)
+  y = y*b*1000
+
+
+  plt.figure(figsize=(3.5, 3))
+  plt.plot(data_MD[:, 0], data_MD[:, 2], "s-", label="MD Result")
+  plt.plot(n_2D, y, "o--", label="Model")
+  plt.xlabel(r"$\sigma_{\mathrm{2D}}$ ($10^{13}$ $e \cdot$cm$^{-2}$)")
+  plt.ylabel(r"$\Delta \Phi_{\mathrm{Coul}}$ (mJ$\cdot$m$^{-2}$)")
+  plt.legend(loc=0)
+  plt.savefig("../img/SI_compare_model.pdf")
+#+END_SRC
+
+#+ATTR_LATEX: :width 0.95\linewidth
+#+NAME: fig-SI-mode
+#+CAPTION: Simple model for the asymmetric behavior of $\Delta \Phi_{\mathrm{Coul}}$ as a function of $\sigma_{\mathrm{2D}}$. (a) Proposed orientation of first layer water molecules on n- and p-doped graphene surface. (b) Comparison between the $\Delta \Phi_{\mathrm{Coul}}$ values calculated by MD simulation and the proposed model. The results obtained by the simple capacitance model shows similar shift of $\Delta \Phi_{\mathrm{2D}}$ maximum.
+[[file:../img/SI_model.pdf]]
+
+\newpage{}
+
 ** Fitting of the $\Delta \Phi$ - $\sigma_{\mathrm{2D}}$ Data in MD Simulations
-#+NAME: fig-SI-fitting
+
 
 #+BEGIN_SRC python :exports results 
   import numpy
@@ -482,304 +782,14 @@
                               r":width 0.85\linewidth")])
 #+END_SRC
 
-#+RESULTS:
 :RESULTS:
+#+NAME: fig-SI-fitting
 #+CAPTION: Best fitting  results of $\Delta \Phi_{\mathrm{LJ}}$ and $\Delta \Phi_{\mathrm{Coul}}$ as functions of $\sigma_{\mathrm{2D}}$ for n- and p-doped graphene-water systems. Total potential change $\Delta \Phi$ is fitted by combining the fitting results of LJ and Coulombic potentials
 #+ATTR_latex: :width 0.85\linewidth
 [[file:../img/e-Phi_vdw-fitting.pdf]]
 :END:
+
 \newpage{}
-** Properties of First Water Layer Adjacent to Charged Graphene Surface
-#+BEGIN_SRC python :exports results 
-  import numpy, matplotlib
-  matplotlib.use("Agg")
-  import matplotlib.pyplot as plt
-  import scipy.constants as const
-  import scipy
-  import pycse.orgmode as org
-  from scipy.interpolate import interp1d
-  from copy import copy
-  from pubfigure.FigureCollection import FigureCollection
-
-  charge_per_atom = [-12, -6, 0, 6, 12]
-
-  charge_per_atom = [0, 0.001, 0.002, 0.003, 0.004, 0.005, 0.006, 0.008, 0.010, 0.012]
-  neg_charge = copy(charge_per_atom)
-  neg_charge.reverse()
-  cases = ["", "neg"]
-
-  c_atom_to_sigma = lambda x: x*2/(2.465e-8**2*scipy.sin(scipy.pi/3))
-  z_gr = 1.980
-
-  f_charge_base = "../data/6_11_17_data/charge_int_{}_large2.xvg"
-  f_charge_water = "../data/6_11_17_data/charge_int_water-surf.xvg"
-
-  f_dens_base = "../data/6_11_17_data/density_int_{}_large2.xvg"
-  f_dens_water = "../data/6_11_17_data/density_int_water-surf.xvg"
-
-
-  n_2D = []
-  zmax_rho = []
-  rho_max = []
-  zmax_delta = []
-  delta_max = []
-
-  for c in neg_charge[: -1]:
-      data_dens = numpy.genfromtxt(f_dens_base.format("neg"+"{:.3f}".format(c)),
-                                   delimiter=(12, 17), skip_header=19)
-      data_chg = numpy.genfromtxt(f_charge_base.format("neg"+"{:.3f}".format(c)),
-                                  delimiter=(12, 17), skip_header=19)
-      n_2D.append(c_atom_to_sigma(-c)/10**13)
-      # density
-      f_dens = interp1d(data_dens[:, 0], data_dens[:, 1], kind="slinear")
-      zz = numpy.linspace(data_dens[:, 0].min(), data_dens[:, 0].max(), 50000)
-      yy = f_dens(zz)
-      zz = zz - z_gr
-      z_sel = zz[(zz>0.2) & (zz<0.4)]
-      y_sel = yy[(zz>0.2) & (zz<0.4)]
-      p = y_sel.argmax()
-      # zmax_rho.append(z_sel[p])
-      rho_max.append(y_sel[p])
-
-      f_dens = interp1d(data_dens[:, 0], data_dens[:, 1], kind="cubic")
-      zz = numpy.linspace(data_dens[:, 0].min(), data_dens[:, 0].max(), 50000)
-      yy = f_dens(zz)
-      zz = zz - z_gr
-      z_sel = zz[(zz>0.2) & (zz<0.4)]
-      y_sel = yy[(zz>0.2) & (zz<0.4)]
-      p = y_sel.argmax()
-      zmax_rho.append(z_sel[p])
-      # rho_max.append(y_sel[p])
-
-      # charge
-      f_chg = interp1d(data_chg[:, 0], data_chg[:, 1], kind="slinear")
-      zz = numpy.linspace(data_chg[:, 0].min(), data_chg[:, 0].max(), 50000)
-      yy = f_chg(zz)
-      zz = zz - z_gr
-      z_sel = zz[(zz>0.15) & (zz<0.3)]
-      y_sel = yy[(zz>0.15) & (zz<0.3)]
-      p = y_sel.argmax()
-      # zmax_delta.append(z_sel[p])
-      delta_max.append(y_sel[p])
-
-      f_chg = interp1d(data_chg[:, 0], data_chg[:, 1], kind="cubic")
-      zz = numpy.linspace(data_chg[:, 0].min(), data_chg[:, 0].max(), 50000)
-      yy = f_chg(zz)
-      zz = zz - z_gr
-      z_sel = zz[(zz>0.15) & (zz<0.3)]
-      y_sel = yy[(zz>0.15) & (zz<0.3)]
-      p = y_sel.argmax()
-      zmax_delta.append(z_sel[p])
-      # delta_max.append(y_sel[p])
-
-  for c in charge_per_atom:
-      data_dens = numpy.genfromtxt(f_dens_base.format("{:.3f}".format(c)),
-                                   delimiter=(12, 17), skip_header=19)
-      data_chg = numpy.genfromtxt(f_charge_base.format("{:.3f}".format(c)),
-                                  delimiter=(12, 17), skip_header=19)
-      n_2D.append(c_atom_to_sigma(c)/10**13)
-      # density
-      f_dens = interp1d(data_dens[:, 0], data_dens[:, 1], kind="slinear")
-      zz = numpy.linspace(data_dens[:, 0].min(), data_dens[:, 0].max(), 50000)
-      yy = f_dens(zz)
-      zz = zz - z_gr
-      z_sel = zz[(zz>0.2) & (zz<0.4)]
-      y_sel = yy[(zz>0.2) & (zz<0.4)]
-      p = y_sel.argmax()
-      # zmax_rho.append(z_sel[p])
-      rho_max.append(y_sel[p])
-
-      f_dens = interp1d(data_dens[:, 0], data_dens[:, 1], kind="cubic")
-      zz = numpy.linspace(data_dens[:, 0].min(), data_dens[:, 0].max(), 50000)
-      yy = f_dens(zz)
-      zz = zz - z_gr
-      z_sel = zz[(zz>0.2) & (zz<0.4)]
-      y_sel = yy[(zz>0.2) & (zz<0.4)]
-      p = y_sel.argmax()
-      zmax_rho.append(z_sel[p])
-      # rho_max.append(y_sel[p])
-
-      # charge
-      f_chg = interp1d(data_chg[:, 0], data_chg[:, 1], kind="slinear")
-      zz = numpy.linspace(data_chg[:, 0].min(), data_chg[:, 0].max(), 50000)
-      yy = f_chg(zz)
-      zz = zz - z_gr
-      z_sel = zz[(zz>0.15) & (zz<0.3)]
-      y_sel = yy[(zz>0.15) & (zz<0.3)]
-      p = y_sel.argmax()
-      # zmax_delta.append(z_sel[p])
-      delta_max.append(y_sel[p])
-
-      f_chg = interp1d(data_chg[:, 0], data_chg[:, 1], kind="cubic")
-      zz = numpy.linspace(data_chg[:, 0].min(), data_chg[:, 0].max(), 50000)
-      yy = f_chg(zz)
-      zz = zz - z_gr
-      z_sel = zz[(zz>0.15) & (zz<0.3)]
-      y_sel = yy[(zz>0.15) & (zz<0.3)]
-      p = y_sel.argmax()
-      zmax_delta.append(z_sel[p])
-      # delta_max.append(y_sel[p])
-
-  n_2D = numpy.array(n_2D)
-  zmax_rho = numpy.array(zmax_rho)
-  zmax_delta = numpy.array(zmax_delta)
-  rho_max = numpy.array(rho_max)
-  delta_max = numpy.array(delta_max)
-
-  delta_shift = numpy.array([0, 0, -0.08, -0.17, -0.25,
-                             -0.327, -0.56, -0.56, -0.5,
-                             0,
-                             0, 0, 0, 0,
-                             0, 0, 0, 0, 0,])
-  delta_max += delta_shift
-
-  numpy.savetxt("../data/data_1st_layer.txt",
-		numpy.vstack([n_2D, zmax_delta, delta_max]).T)
-
-  def plot_zmax(fig, what="mass"):
-      ax = fig.add_subplot(111)
-      if what is "mass":
-          ax.plot(n_2D, zmax_rho, "s-")
-          ax.set_xlabel(r"$\sigma_{\mathrm{2D}}$ ($10^{13}$ $e\cdot$cm$^{-2}$)")
-          ax.set_ylabel(r"$z_{1}(\max\ \rho_{\mathrm{L}})$ (nm)")
-          # ax.set_xlim(0, 1)
-          # ax.legend(loc=0, title=r"$\sigma_{\mathrm{2D}}$")
-      elif what is "charge":
-          ax.plot(n_2D, zmax_delta, "s-")
-          ax.set_xlabel(r"$\sigma_{\mathrm{2D}}$ ($10^{13}$ $e\cdot$cm$^{-2}$)")
-          ax.set_ylabel(r"$z_{1}(\max\ \delta_{\mathrm{L}})$ (nm)")
-      fig.tight_layout(pad=0.05)
-
-  def plot_max(fig, what="mass"):
-      ax = fig.add_subplot(111)
-      if what is "mass":
-          ax.plot(n_2D, rho_max, "s-")
-          ax.set_xlabel(r"$\sigma_{\mathrm{2D}}$ ($10^{13}$ $e\cdot$cm$^{-2}$)")
-          ax.set_ylabel(r"$\max\ \rho_{\mathrm{L}}$ (kg$\cdot$m$^{-3}$)")
-          # ax.set_xlim(0, 1)
-          # ax.legend(loc=0, title=r"$\sigma_{\mathrm{2D}}$")
-      elif what is "charge":
-          ax.plot(n_2D, delta_max, "s-")
-          ax.set_xlabel(r"$\sigma_{\mathrm{2D}}$ ($10^{13}$ $e\cdot$cm$^{-2}$)")
-          ax.set_ylabel(r"$\max\ \delta_{\mathrm{L}}$ ($e\cdot$nm$^{-3}$)")
-      fig.tight_layout(pad=0.05)
-
-  if __name__ == "__main__":
-      # matplotlib.style.use("science")
-
-      fc = FigureCollection(pagesize=(6, 5), figure_style="science",
-                            col=2, row=2)
-
-      fig, _ = fc.add_figure()
-      fig.set_plot_func(plot_zmax, what="mass")
-
-      fig, _ = fc.add_figure()
-      fig.set_plot_func(plot_max, what="mass")
-
-      fig, _ = fc.add_figure()
-      fig.set_plot_func(plot_zmax, what="charge")
-
-      fig, _ = fc.add_figure()
-      fig.set_plot_func(plot_max, what="charge")
-
-      org.figure(fc.save_all("../img/SI_prop_1st_layer.pdf"),
-		 caption=("Properties of the first water layer adjacent "
-                          "to the charged graphene surface. The following quantities "
-                          "are plotted as a function of "
-                          r"$\sigma_{\mathrm{2D}}$: "
-                          "(a) z-position of the first water layer with maximal value of "
-                          r"$\rho_{\mathrm{L}}$. "
-                          r"(b) maximal $\rho_{\mathrm{L}}$ of the first water layer. "
-                          "(c) z-position of the first water layer with maximal value of "
-                          r"$\delta_{\mathrm{L}}$. "
-                          r"and (d) maximal $\delta_{\mathrm{L}}$ "
-                          "of the first water layer."),
-		 label="fig-SI-1st")
-#+END_SRC
-
-
-:RESULTS:
-#+NAME: fig-SI-1st
-#+CAPTION: Properties of the first water layer adjacent to the charged graphene surface. The following quantities are plotted as a function of $\sigma_{\mathrm{2D}}$: (a) z-position of the first water layer with maximal value of $\rho_{\mathrm{L}}$. (b) maximal $\rho_{\mathrm{L}}$ of the first water layer. (c) z-position of the first water layer with maximal value of $\delta_{\mathrm{L}}$. and (d) maximal $\delta_{\mathrm{L}}$ of the first water layer.
-[[file:../img/SI_prop_1st_layer.pdf]]
-:END:
-\newpage{}
-
-** Explanation for Shift of $\Delta \Phi_{\mathrm{Coul}}$ Maximum from Charge Neutral State
-
-As can be seen in Figure 3(c) in the main text, the maximum of $\Delta
-\Phi_{\mathrm{Coul}}$ as function of $\sigma_{\mathrm{2D}}$ shifts
-from charge neutral state (\(\sigma_{\mathrm{2D}} = 0\)) to slightly
-n-doped region. This behavior can be explained by the contribution
-from the interfacial charge density to the Coulombic interactions.
-Assuming that the interfacial charge density per unit area of the
-water layer $\sigma_{\mathrm{L}}$ is approximated by
-$\sigma_{\mathrm{L}}=\delta_{\mathrm{L}} \cdot t_{1}$, where $t_{1}$
-is the thickness of the 1st water layer (~2.8 \AA). The interfacial
-Coulombic potential caused by the 1st charged layer is then:
-\begin{equation}
-\label{eq:1}
-\begin{aligned}
-\Delta \Phi_{\mathrm{Coul}}^{\mathrm{int}} &= \frac{\sigma_{\mathrm{2D}} \sigma_{\mathrm{L}}}{2C_{\mathrm{int}}} \\
-                                           &= \frac{\sigma_{\mathrm{2D}} \delta_{\mathrm{L}} t_{1} d_{1}}{2\epsilon_{\mathrm{int}}}
-\end{aligned}
-\end{equation}
-where $C_{\mathrm{int}}=\epsilon_{\mathrm{int}}/d_{1}$ is the
-geometric capacitance of the interfacial void, $\epsilon_{1}$ and
-$d_{1}$ are the permittivity and thickness of the interfacial void. We
-assume that the interfacial dielectric constant
-$\epsilon_{\mathrm{int}} = 20 \epsilon_{0}$
-cite:conway_dielectric_1951, and take the value of $d_{1}$ from Figure
-S4(c). The comparison between the $\Delta \Phi_{\mathrm{Coul}}$ from
-MD results and the proposed model can be seen in Figure
-[[ref:fig-SI-dipole]](b). The degree of Coulombic interactions from the
-model is close to that of the MD results, indicating that the decrease
-of interaction potential of the graphene-water system is mainly
-determined by the interfacial charge distribution. The result
-predicted by the model also shows a shifted maximum of $\Delta
-\Phi_{\mathrm{Coul}}$, well corresponding with the MD results. Such
-asymmetric behavior is further ascribed to the decrease of
-$\delta_{\mathrm{L}}$ when graphene is slightly n-doped (see Figure
-[[ref:fig-SI-1st]](d)), as a combined result of the Coulombic interaction
-and hydrogen bonding. Note that in the p-doped regime, the
-model-predicted $\Delta \Phi_{\mathrm{Coul}}$ value differs from the
-MD results, suggesting that the contribution from the subsequent
-layers are important.
-
-#+BEGIN_SRC python :exports none 
-  import numpy, scipy
-  from pubfigure.FigureCollection import FigureCollection
-  import matplotlib
-  matplotlib.style.use("science")
-  import matplotlib.pyplot as plt
-  import scipy.constants as const
-
-  data_MD = numpy.loadtxt("../data/data_MD.txt")
-  data_1st = numpy.loadtxt("../data/data_1st_layer.txt")
-
-  n_2D = data_1st[:, 0]
-  delta = data_1st[:, 2]
-  d = data_1st[:, 1]
-  y = n_2D*(delta - delta[9])*d
-  b = 10**17 * const.e * const.e / (10**-9)**3 * 10**-9 * 3.2e-10 / (2*20*const.epsilon_0)
-  y = y*b*1000
-
-
-  plt.figure(figsize=(3.5, 3))
-  plt.plot(data_MD[:, 0], data_MD[:, 2], "s-", label="MD Result")
-  plt.plot(n_2D, y, "o--", label="Model")
-  plt.xlabel(r"$\sigma_{\mathrm{2D}}$ ($10^{13}$ $e \cdot$cm$^{-2}$)")
-  plt.ylabel(r"$\Delta \Phi_{\mathrm{Coul}}$ (mJ$\cdot$m$^{-2}$)")
-  plt.legend(loc=0)
-  plt.savefig("../img/SI_compare_model.pdf")
-#+END_SRC
-
-#+ATTR_LATEX: :width 0.95\linewidth
-#+NAME: fig-SI-mode
-#+CAPTION: Simple model for the asymmetric behavior of $\Delta \Phi_{\mathrm{Coul}}$ as a function of $\sigma_{\mathrm{2D}}$. (a) Proposed orientation of first layer water molecules on n- and p-doped graphene surface. (b) Comparison between the $\Delta \Phi_{\mathrm{Coul}}$ values calculated by MD simulation and the proposed model. The results obtained by the simple capacitance model shows similar shift of $\Delta \Phi_{\mathrm{2D}}$ maximum.
-[[file:../img/SI_model.pdf]]
-
-
 
 
 [[bibliography:ref.bib]]
