@@ -1,19 +1,23 @@
 #+LATEX_CLASS: achemso
-#+LATEX_CLASS_OPTIONS: [journal=ancac3,manuscript=suppinfo,email=true]
+#+LATEX_CLASS_OPTIONS: [journal=jacsat,manuscript=suppinfo,email=true,hyperref=true,keywords=true]
 #+LATEX_HEADER: \usepackage{graphicx}
 #+LATEX_HEADER: \usepackage{float}
 #+LATEX_HEADER: \usepackage{xcolor}
 #+LATEX_HEADER: \usepackage{amsmath}
 #+LATEX_HEADER: \usepackage{fontspec}
-#+DESCRIPTION:
-#+KEYWORDS:
+
 #+OPTIONS: tex:t toc:nil todo:t author:nil date:nil title:nil ^:t tags:nil
 #+DESCRIPTION:
 
-#+TITLE: Multiscale Understanding the Wettability of Doped Two-Dimensional Materials
+# #+TITLE: Multiscale Understanding the Wettability of Doped Two-Dimensional Materials
+#+TITLE: Doping-Driven Wettability of Two-Dimensional Materials: a Multiscale Theory
 
 #+LATEX_HEADER: \author{Tian Tian} 
 #+LATEX_HEADER:  \affiliation{Institute for Chemical and Bioengineering, ETH Z{\"{u}}rich,  Vladimir Prelog Weg 1, CH-8093 Z{\"{u}}rich, Switzerland}
+
+#+LATEX_HEADER:  \author{Shangchao Lin}
+#+LATEX_HEADER:  \email{slin@eng.fsu.edu.}
+#+LATEX_HEADER:  \affiliation{Department of Mechanical Engineering, Materials Science and Engineering Program, FAMU-FSU College of Engineering, Florida State University, Tallahassee, Florida 32310, United States}
 
 #+LATEX_HEADER: \author{Siyu Li}
 #+LATEX_HEADER:  \affiliation{Key Laboratory of Energy Thermal Conversion and Control of Ministry of Education, School of Energy and Environment, Southeast University, Nanjing, Jiangsu 210096, China}
@@ -22,17 +26,11 @@
 #+LATEX_HEADER:  \affiliation{Key Laboratory of Energy Thermal Conversion and Control of Ministry of Education, School of Energy and Environment, Southeast University, Nanjing, Jiangsu 210096, China}
 
 #+LATEX_HEADER: \author{Elton J. G. Santos}
-#+LATEX_HEADER:  \affiliation{School of Mathematics and Physics, Queen's University Belfast, United Kingdom}
-#+LATEX_HEADER:  \affiliation{School of Chemistry and Chemical Engineering, Queen's University Belfast, United Kingdom}
+#+LATEX_HEADER:  \affiliation{School of Mathematics and Physics, Queen's University Belfast, BT7 1NN, United Kingdom}
 
-#+LATEX_HEADER:  \author{Shangchao Lin}
-#+LATEX_HEADER:  \email{slin@eng.fsu.edu.}
-#+LATEX_HEADER:  \affiliation{Department of Mechanical Engineering, Materials Science and Engineering Program, FAMU-FSU College of Engineering, Florida State University, Tallahassee, Florida 32310, United States}
 #+LATEX_HEADER: \author{Chih-Jen Shih}
 #+LATEX_HEADER:  \email{chih-jen.shih@chem.ethz.ch}
 #+LATEX_HEADER:  \affiliation{Institute for Chemical and Bioengineering, ETH Z{\"{u}}rich,  Vladimir Prelog Weg 1, CH-8093 Z{\"{u}}rich, Switzerland}
-
-#+LATEX_HEADER: \keywords{two-dimensional materials, doping, wettability, multiscale analysis, MD Simulation, electrical double layer}
 
 
 \newpage{}
