@@ -1,5 +1,5 @@
 #+LATEX_CLASS: achemso
-#+LATEX_CLASS_OPTIONS: [journal=jacsat,manuscript=article,email=true,hyperref=true,keywords=true]
+#+LATEX_CLASS_OPTIONS: [journal=ancac3,manuscript=article,email=true,hyperref=true,keywords=true]
 #+LATEX_HEADER: \usepackage{graphicx}
 #+LATEX_HEADER: \usepackage{float}
 #+LATEX_HEADER: \usepackage{xcolor}
@@ -32,7 +32,7 @@
 #+LATEX_HEADER:  \email{chih-jen.shih@chem.ethz.ch}
 #+LATEX_HEADER:  \affiliation{Institute for Chemical and Bioengineering, ETH Z{\"{u}}rich,  Vladimir Prelog Weg 1, CH-8093 Z{\"{u}}rich, Switzerland}
 
-#+LATEX_HEADER: \keywords{two-dimensional materials, doping, wettability, multiscale analysis, MD Simulation, electrical double layer}
+#+LATEX_HEADER: \keywords{two-dimensional materials, doping, wettability, multiscale analysis, molecular dynamics simulation, electrical double layer}
 
 #+BEGIN_EXPORT latex
 \begin{tocentry}
@@ -55,9 +55,9 @@
   interfaces, including: (i) the change of 2D materials surface energy
   (atomistic scale, several \AA), (ii) the molecular reorientation of
   liquid molecules adjacent to the interface (molecular scale,
-  \(10^{0}\) \sim \(10^{1}\) nm), and (iii) the electrical double layer
-  (EDL) formed in the liquid phase (continuum level,
-  \(10^{0}\) \sim \(10^{4}\) nm).  The latter two effects are found to
+  \(10^{0} \sim 10^{1}\) nm), and (iii) the electrical double layer
+  (EDL) formed in the liquid phase (mesoscopic scales,
+  \(10^{0} \sim 10^{4}\) nm).  The latter two effects are found to
   be the major mechanisms responsible for the contact angle change
   upon doping.  When the doping level is electrostatically tuned, we
   demonstrate that 2D materials with high quantum capacitances (e.g.,
@@ -177,10 +177,10 @@ surface-charge-induced reorientation of liquid molecules adjacent to
 the interface is associated with an N-body system, which is resolved
 by molecular dynamics (MD) simulations, allowing quantification of the
 interfacial tension in the absence of electrolytes in liquid at the
-molecular scale (10^{0} ~ 10^{1} nm). The effect of the electrical
+molecular scale (\(10^{0} \sim 10^{1}\) nm). The effect of the electrical
 double layer (EDL) induced by the electrostatic interactions between
 the 2D material surface charges and the ionic species in liquid, is
-then addressed at the continuum level (10^{0} ~ 10^{4} nm). Practical
+then addressed at the continuum level (\(10^{0} \sim 10^{4}\) nm). Practical
 considerations, such as the defect density and the surface
 contamination are also taken into account to provide a comprehensive
 understanding of the phenomena. Finally, we examine and validate our
@@ -918,7 +918,7 @@ reorientation of liquid molecules adjacent to the interface, and (iii)
 the electrical double layer formed in the liquid phase. Taking
 graphene as an example, we show that the Coulombic interaction
 dominates the change of liquid-2D material interfacial tension, at
-both atomistic and continuum length scales.The latter two effects were
+both molecular and mesoscopic length scales. The latter two effects were
 found to be the major mechanisms responsible for the water contact angle
 change at the 2D material interfaces upon doping.
 
@@ -931,14 +931,22 @@ interactions. Our results also reveal an asymmetric change of
 graphene-water interfacial energy upon doping, such that slightly
 n-doped graphene can reorient interfacial water molecules to minimize
 electrostatic attractions, and therefore, slightly increase the
-interfacial energy.
+interfacial energy. Such asymmetric interfacial energy change arises
+from the dipolar nature of water, which implies that the polarities of
+liquid and 2D material both determine the symmetry of
+doping-driven wettability: the change of interfacial energy upon
+doping between nonpolar liquid molecules and homoatomic 2D material is
+more symmetric than that between polar liquid and polar 2D
+material. We expect that in the latter case, the symmetry of
+interfacial energy change would highly depend on the delicate balance
+between their degrees of polarization.
 
-On the hand, the EDL effect is calculated by a continuum model. Our
+On the other hand, the EDL effect is calculated by a continuum model. Our
 analysis suggests that the reorientation effect is more predominant
-than the EDL effect, On the graphene-water interface, we predict that
+than the EDL effect. On the graphene-water interface, we predict that
 the combined reorientation and EDL effects can induce a significant
 change of the interfacial tension $\Delta
-\gamma_{\mathrm{2D-L}}$, up to -15~-20 $\mathrm{mJ}\cdot
+\gamma_{\mathrm{2D-L}}$, up to -15 $\mathrm{mJ}\cdot
 \mathrm{m}^{-2}$, at the doping level of $\pm 4 \times 10^{13}\ e\cdot
 \mathrm{cm}^{-2}$. By adding the fitting parameter concerning the
 defect density, our theoretical framework can nicely describe the
@@ -1131,7 +1139,7 @@ graphene-water system.
 :RESULTS:
 #+CAPTION: Atomistic scale: $\Delta \gamma_{\mathrm{2D}}$ as a function of $\sigma_{\mathrm{2D}}$ for selected 2D materials: graphene, silicene, germanene, phosphorene, MoS$_{2}$, MoSe$_{2}$, MoTe$_{2}$, WS$_{2}$, WSe$_{2}$ and WTe$_{2}$. The 2D semimetals (graphene, silicene and germanene) with low high quantum capcitances show larger decrease of $\gamma_{\mathrm{2D}}$ upon doping, compared with the 2D semiconductors (TMDCs, phosphorene).
 #+LABEL: fig:dgamma-sigma
-#+ATTR_latex: :width 0.95\linewidth
+#+ATTR_latex: :width 0.75\linewidth
 [[file:../img/dgamma-sigma.pdf]]
 :END:
 
